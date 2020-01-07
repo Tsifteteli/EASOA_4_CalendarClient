@@ -5,6 +5,7 @@
  */
 package view;
 
+import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -13,10 +14,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ClientGUI extends javax.swing.JFrame {
    
-   //Grundsökvägen till webservicarna vi vill anropa
-   private static final String TIME_EDIT_URI = "";
-   private static final String CANVAS_URI = "";
-   //2D array för data til JTable (Tablemodel)
+      //2D array för data til JTable (Tablemodel)
    private Object[][] data;
    private DefaultTableModel tblModel;
 
@@ -25,6 +23,21 @@ public class ClientGUI extends javax.swing.JFrame {
     */
    public ClientGUI() {
       initComponents();
+   }
+   
+   //Relaterar arrayen data till JTable(tblCalendarEvents) som visar upp innehållet   
+   //aka initTable() i GuiDbDemo.java i D0024E
+   private void loadDataToTable() {
+      
+      String[] columnNames = {"Title", "Location", "Address", "Details"};
+      tblModel = new DefaultTableModel(this.data, columnNames);
+      tblCalendarEvents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+      tblCalendarEvents.setModel(tblModel);
+      tblCalendarEvents.getColumnModel().getColumn(0).setPreferredWidth(10);
+      tblCalendarEvents.getColumnModel().getColumn(1).setPreferredWidth(10);
+      tblCalendarEvents.getColumnModel().getColumn(2).setPreferredWidth(10);
+      tblCalendarEvents.getColumnModel().getColumn(3).setPreferredWidth(20);
+      tblCalendarEvents.setShowGrid(true);
    }
 
    /**
@@ -37,7 +50,7 @@ public class ClientGUI extends javax.swing.JFrame {
    private void initComponents() {
 
       jScrollPane1 = new javax.swing.JScrollPane();
-      jTable1 = new javax.swing.JTable();
+      tblCalendarEvents = new javax.swing.JTable();
       btnGetSchedule = new javax.swing.JButton();
       btnEditEvent = new javax.swing.JButton();
       btnLoadToCanvas = new javax.swing.JButton();
@@ -49,7 +62,7 @@ public class ClientGUI extends javax.swing.JFrame {
 
       setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-      jTable1.setModel(new javax.swing.table.DefaultTableModel(
+      tblCalendarEvents.setModel(new javax.swing.table.DefaultTableModel(
          new Object [][] {
             {null, null, null, null},
             {null, null, null, null},
@@ -60,7 +73,7 @@ public class ClientGUI extends javax.swing.JFrame {
             "Title 1", "Title 2", "Title 3", "Title 4"
          }
       ));
-      jScrollPane1.setViewportView(jTable1);
+      jScrollPane1.setViewportView(tblCalendarEvents);
 
       btnGetSchedule.setText("Get schedule");
 
@@ -178,9 +191,9 @@ public class ClientGUI extends javax.swing.JFrame {
    private javax.swing.JLabel jLabel1;
    private javax.swing.JLabel jLabel2;
    private javax.swing.JScrollPane jScrollPane1;
-   private javax.swing.JTable jTable1;
    private javax.swing.JTextField jTextField1;
    private javax.swing.JTextField jTextField2;
    private javax.swing.JLabel lblCourseName;
+   private javax.swing.JTable tblCalendarEvents;
    // End of variables declaration//GEN-END:variables
 }
