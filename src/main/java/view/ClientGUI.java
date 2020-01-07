@@ -14,8 +14,8 @@ import javax.swing.table.DefaultTableModel;
 public class ClientGUI extends javax.swing.JFrame {
    
    //Grundsökvägen till webservicarna vi vill anropa
-   private static final String TIME_EDIT_URI = "http://localhost:8080/SakilaWS/sakila/actors";
-   private static final String CANVAS_URI =
+   private static final String TIME_EDIT_URI = "";
+   private static final String CANVAS_URI = "";
    //2D array för data til JTable (Tablemodel)
    private Object[][] data;
    private DefaultTableModel tblModel;
@@ -72,7 +72,7 @@ public class ClientGUI extends javax.swing.JFrame {
       jTextField1.setText("ex D0031N");
 
       jTextField2.setForeground(new java.awt.Color(153, 153, 153));
-      jTextField2.setText("ex 2020-01-20");
+      jTextField2.setText("ex 2019-09-02");
 
       jLabel1.setText("Course code:");
 
