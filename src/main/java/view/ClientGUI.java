@@ -94,10 +94,25 @@ public class ClientGUI extends javax.swing.JFrame {
       jScrollPane1.setViewportView(tblCalendarEvents);
 
       btnGetSchedule.setText("Get schedule");
+      btnGetSchedule.addActionListener(new java.awt.event.ActionListener() {
+         public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnGetScheduleActionPerformed(evt);
+         }
+      });
 
       btnEditEvent.setText("Edit selected event");
+      btnEditEvent.addActionListener(new java.awt.event.ActionListener() {
+         public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnEditEventActionPerformed(evt);
+         }
+      });
 
       btnLoadToCanvas.setText("Load schedule to Canvas");
+      btnLoadToCanvas.addActionListener(new java.awt.event.ActionListener() {
+         public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnLoadToCanvasActionPerformed(evt);
+         }
+      });
 
       jTextField1.setForeground(new java.awt.Color(153, 153, 153));
       jTextField1.setText("ex D0031N");
@@ -166,6 +181,24 @@ public class ClientGUI extends javax.swing.JFrame {
 
       pack();
    }// </editor-fold>//GEN-END:initComponents
+
+   private void btnGetScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetScheduleActionPerformed
+      // TODO add your handling code here:
+      //Kör metoden som hämtar JSON-data från TimeEdit
+      //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
+   }//GEN-LAST:event_btnGetScheduleActionPerformed
+
+   private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
+      // TODO add your handling code here:
+      //Visa pop-up där man kan redigera "Details" för ett event
+      //Spara ner de nya details till motsvarande canvasEvent-objekt i canvasEvent-arrayen
+   }//GEN-LAST:event_btnEditEventActionPerformed
+
+   private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
+      // TODO add your handling code here:
+      //Kör metod som POSTar canvasEvent-objekten till Canvas
+      //Visa pop-up som bekräftelse på om det funkat eller ej... (lista vilka som postats och vilka som misslyckats?)
+   }//GEN-LAST:event_btnLoadToCanvasActionPerformed
 
    /**
     * @param args the command line arguments

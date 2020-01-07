@@ -113,16 +113,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Get schedule"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGetScheduleActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnEditEvent">
       <Properties>
         <Property name="text" type="java.lang.String" value="Edit selected event"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditEventActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnLoadToCanvas">
       <Properties>
         <Property name="text" type="java.lang.String" value="Load schedule to Canvas"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLoadToCanvasActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">
       <Properties>
