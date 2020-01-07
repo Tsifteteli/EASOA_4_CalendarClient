@@ -5,11 +5,20 @@
  */
 package view;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Caroline
  */
 public class ClientGUI extends javax.swing.JFrame {
+   
+   //Grundsökvägen till webservicarna vi vill anropa
+   private static final String TIME_EDIT_URI = "http://localhost:8080/SakilaWS/sakila/actors";
+   private static final String CANVAS_URI =
+   //2D array för data til JTable (Tablemodel)
+   private Object[][] data;
+   private DefaultTableModel tblModel;
 
    /**
     * Creates new form ClientGUI
@@ -27,17 +36,101 @@ public class ClientGUI extends javax.swing.JFrame {
    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
    private void initComponents() {
 
+      jScrollPane1 = new javax.swing.JScrollPane();
+      jTable1 = new javax.swing.JTable();
+      btnGetSchedule = new javax.swing.JButton();
+      btnEditEvent = new javax.swing.JButton();
+      btnLoadToCanvas = new javax.swing.JButton();
+      jTextField1 = new javax.swing.JTextField();
+      jTextField2 = new javax.swing.JTextField();
+      jLabel1 = new javax.swing.JLabel();
+      jLabel2 = new javax.swing.JLabel();
+      lblCourseName = new javax.swing.JLabel();
+
       setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+      jTable1.setModel(new javax.swing.table.DefaultTableModel(
+         new Object [][] {
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null}
+         },
+         new String [] {
+            "Title 1", "Title 2", "Title 3", "Title 4"
+         }
+      ));
+      jScrollPane1.setViewportView(jTable1);
+
+      btnGetSchedule.setText("Get schedule");
+
+      btnEditEvent.setText("Edit selected event");
+
+      btnLoadToCanvas.setText("Load schedule to Canvas");
+
+      jTextField1.setForeground(new java.awt.Color(153, 153, 153));
+      jTextField1.setText("ex D0031N");
+
+      jTextField2.setForeground(new java.awt.Color(153, 153, 153));
+      jTextField2.setText("ex 2020-01-20");
+
+      jLabel1.setText("Course code:");
+
+      jLabel2.setText("Sart date:");
+
+      lblCourseName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+      lblCourseName.setText("Course:");
 
       javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
       getContentPane().setLayout(layout);
       layout.setHorizontalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-         .addGap(0, 400, Short.MAX_VALUE)
+         .addGroup(layout.createSequentialGroup()
+            .addGap(22, 22, 22)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+               .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+               .addComponent(lblCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+               .addGroup(layout.createSequentialGroup()
+                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                     .addComponent(jLabel1)
+                     .addComponent(jLabel2))
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                     .addComponent(jTextField1)
+                     .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))))
+            .addGap(42, 42, 42)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+               .addComponent(btnLoadToCanvas)
+               .addComponent(btnEditEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+               .addComponent(btnGetSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addContainerGap(23, Short.MAX_VALUE))
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-         .addGap(0, 300, Short.MAX_VALUE)
+         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGap(28, 28, 28)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+               .addComponent(btnGetSchedule)
+               .addGroup(layout.createSequentialGroup()
+                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                     .addComponent(jLabel1))
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                     .addComponent(jLabel2))))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+            .addComponent(lblCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                  .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                  .addContainerGap())
+               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                  .addComponent(btnEditEvent)
+                  .addGap(148, 148, 148)
+                  .addComponent(btnLoadToCanvas)
+                  .addGap(25, 25, 25))))
       );
 
       pack();
@@ -79,5 +172,15 @@ public class ClientGUI extends javax.swing.JFrame {
    }
 
    // Variables declaration - do not modify//GEN-BEGIN:variables
+   private javax.swing.JButton btnEditEvent;
+   private javax.swing.JButton btnGetSchedule;
+   private javax.swing.JButton btnLoadToCanvas;
+   private javax.swing.JLabel jLabel1;
+   private javax.swing.JLabel jLabel2;
+   private javax.swing.JScrollPane jScrollPane1;
+   private javax.swing.JTable jTable1;
+   private javax.swing.JTextField jTextField1;
+   private javax.swing.JTextField jTextField2;
+   private javax.swing.JLabel lblCourseName;
    // End of variables declaration//GEN-END:variables
 }
