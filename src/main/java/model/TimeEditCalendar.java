@@ -15,27 +15,27 @@ public class TimeEditCalendar {
     private ReservationInfo info;
     private TimeEditEvent[] reservations;
 
-    public void getColumnheaders(String[] columnheaders) {
+    public void setColumnheaders(String[] columnheaders) {
         this.columnheaders = columnheaders;
     }
 
-    public String[] setColumnheaders() {
+    public String[] getColumnheaders() {
         return columnheaders;
     }
 
-    public void getInfo(ReservationInfo info) {
+    public void setInfo(ReservationInfo info) {
         this.info = info;
     }
 
-    public ReservationInfo setInfo() {
+    public ReservationInfo getInfo() {
         return info;
     }
 
-    public void getReservations(TimeEditEvent[] reservations) {
+    public void setReservations(TimeEditEvent[] reservations) {
         this.reservations = reservations;
     }
 
-    public TimeEditEvent[] setReservations() {
+    public TimeEditEvent[] getReservations() {
         return reservations;
     }
 }

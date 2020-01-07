@@ -18,51 +18,51 @@ public class TimeEditEvent {
     private String endtime;
     private String[] columns;
 
-    public void getId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String setId() {
+    public String getId() {
         return id;
     }
 
-    public void getStartdate(String startdate) {
+    public void setStartdate(String startdate) {
         this.startdate = startdate;
     }
 
-    public String setStartdate() {
+    public String getStartdate() {
         return startdate;
     }
 
-    public void getStarttime(String starttime) {
+    public void setStarttime(String starttime) {
         this.starttime = starttime;
     }
 
-    public String setStarttime() {
+    public String getStarttime() {
         return starttime;
     }
 
-    public void getEnddate(String enddate) {
+    public void setEnddate(String enddate) {
         this.enddate = enddate;
     }
 
-    public String setEnddate() {
+    public String getEnddate() {
         return enddate;
     }
 
-    public void getEndtime(String endtime) {
+    public void setEndtime(String endtime) {
         this.endtime = endtime;
     }
 
-    public String setEndtime() {
+    public String getEndtime() {
         return endtime;
     }
 
-    public void getColumns(String[] columns) {
+    public void setColumns(String[] columns) {
         this.columns = columns;
     }
 
-    public String[] setColumns() {
+    public String[] getColumns() {
         return columns;
     }
 
