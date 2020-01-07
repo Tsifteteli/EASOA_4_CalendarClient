@@ -5,9 +5,8 @@
  */
 package controler;
 
-import com.google.gson.JsonElement;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +26,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import model.CanvasEvent;
 import java.time.LocalDateTime;
+import model.ReservationInfo;
+import model.TimeEditCalendar;
+import model.TimeEditEvent;
 
 /**
  *
@@ -85,10 +87,30 @@ public class ClientControler {
         //Konvertera JSON-Array till en Array med Java-objekt (Av en klass som jag skapat som matchar)
         //Finns flera olika 3e-parts-bibliotek som kan användas för detta på https://www.json.org/json-en.html
         //I detta fallet används google-gson
-        JsonElement jsonElement = new JsonParser().parse(jsonInput);
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-        System.out.printf("%s\n%s\n%s\n", jsonObject.get("columnheaders"), jsonObject.get("info"), jsonObject.get("reservations"));
 
+        TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
+        JsonObject jsonObject = new Gson().fromJson(jsonInput, JsonObject.class);
+
+        String[] columnheaders = new Gson().fromJson(jsonObject.get("columnheaders"), String[].class);
+        ReservationInfo info = new Gson().fromJson(jsonObject.get("info"), ReservationInfo.class);
+        TimeEditEvent[] timeEditEvent = new Gson().fromJson(jsonObject.get("reservations"), TimeEditEvent[].class);
+
+        timeEditCalendar.setReservations(timeEditEvent);
+        timeEditCalendar.setInfo(info);
+        timeEditCalendar.setColumnheaders(columnheaders);
+
+//        for (int i = 0; i < timeEditEvent.length; i++) {
+//
+//            System.out.printf("%s %s %s %s %s\n",
+//                    timeEditEvent[i].getId(),
+//                    timeEditEvent[i].getStartdate(),
+//                    timeEditEvent[i].getStarttime(),
+//                    timeEditEvent[i].getEnddate(),
+//                    timeEditEvent[i].getEndtime());
+//            for (int j = 0; j < timeEditEvent[i].getColumns().length; j++) {
+//                System.out.printf("%s\n", timeEditEvent[i].getColumns()[j]);
+//            }
+//        }
     }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
