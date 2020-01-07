@@ -25,9 +25,31 @@ public class ClientGUI extends javax.swing.JFrame {
       initComponents();
    }
    
+   private void loadJTableFromJson(String jsonInput) {
+      //Konvertera JSON-Array till en Array med Java-objekt (Av en klass som jag skapat som matchar)
+      //Finns flera olika 3e-parts-bibliotek som kan användas för detta på https://www.json.org/json-en.html
+      //I detta fallet används google-gson
+      Person[] personArray = new Gson().fromJson(jsonInput, Person[].class);
+      
+      //Specifiera storlek på en annan array (kallad data) som används för att föra över datat till min JTable sen.
+      int rows = personArray.length;
+      data = new Object[rows][3];
+      int row = 0;
+      for(Person person : personArray) {
+         //test
+//         System.out.println(person.getId() + person.getFirst_name() + "" + person.getLast_name());
+         //Ladda JTable
+         data[row][0] = person.getId();
+         data[row][1] = person.getFirst_name();
+         data[row][2] = person.getLast_name();
+         row++;
+      }
+      initTable();
+   }
+   
    //Relaterar arrayen data till JTable(tblCalendarEvents) som visar upp innehållet   
    //aka initTable() i GuiDbDemo.java i D0024E
-   private void loadDataToTable() {
+   private void initTable() {
       
       String[] columnNames = {"Title", "Location", "Address", "Details"};
       tblModel = new DefaultTableModel(this.data, columnNames);
