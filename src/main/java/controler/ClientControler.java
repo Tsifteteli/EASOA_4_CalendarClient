@@ -5,7 +5,9 @@
  */
 package controler;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +16,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.TimeEditCalendar;
 
 /**
  *
@@ -23,7 +24,7 @@ import model.TimeEditCalendar;
 public class ClientControler {
 
     //Grundsökvägen till webservicarna vi vill anropa
-    private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json";//?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
+    private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
 
     private void getTimeEditCalendar() {
@@ -73,22 +74,10 @@ public class ClientControler {
         //Konvertera JSON-Array till en Array med Java-objekt (Av en klass som jag skapat som matchar)
         //Finns flera olika 3e-parts-bibliotek som kan användas för detta på https://www.json.org/json-en.html
         //I detta fallet används google-gson
-        TimeEditCalendar[] timeEditCalendar = new Gson().fromJson(jsonInput, TimeEditCalendar[].class);
+        JsonElement jsonElement = new JsonParser().parse(jsonInput);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        System.out.printf("%s\n%s\n%s\n", jsonObject.get("columnheaders"), jsonObject.get("info"), jsonObject.get("reservations"));
 
-        //Specifiera storlek på en annan array (kallad data) som används för att föra över datat till min JTable sen.
-        int rows = timeEditCalendar.length;
-        data = new Object[rows][3];
-        int row = 0;
-        for (Person person : timeEditCalendar) {
-            //test
-//         System.out.println(person.getId() + person.getFirst_name() + "" + person.getLast_name());
-            //Ladda JTable
-            data[row][0] = person.getId();
-            data[row][1] = person.getFirst_name();
-            data[row][2] = person.getLast_name();
-            row++;
-        }
-        loadDataToTable(); //aka initTable() i GuiDbDemo.java i D0024E
     }
 
     public void setCanvasCalendar() {
