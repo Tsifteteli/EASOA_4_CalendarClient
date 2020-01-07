@@ -15,51 +15,51 @@ import model.CanvasEvent;
  * @author Caroline
  */
 public class ClientGUI extends javax.swing.JFrame {
-   
-      //2D array för data til JTable (Tablemodel)
-   private Object[][] data;
-   private DefaultTableModel tblModel;
-   private String details;
 
-   /**
-    * Creates new form ClientGUI
-    */
-   public ClientGUI() {
-      initComponents();
-      pnlEditEvent.setVisible(false);
-   }
-   
-   private void loadEventsToJTable(CanvasEvent[] canvasEventsArray) {
-      
-      //Specifiera storlek på en annan array (kallad data) som används för att föra över datat till min JTable sen.
-      int rows = canvasEventsArray.length;
-      data = new Object[rows][4];
-      int row = 0;
-      for(CanvasEvent canvasEvent : canvasEventsArray) {
-         //test
+    //2D array för data til JTable (Tablemodel)
+    private Object[][] data;
+    private DefaultTableModel tblModel;
+    private String details;
+
+    /**
+     * Creates new form ClientGUI
+     */
+    public ClientGUI() {
+        initComponents();
+        pnlEditEvent.setVisible(false);
+    }
+
+    private void loadEventsToJTable(CanvasEvent[] canvasEventsArray) {
+
+        //Specifiera storlek på en annan array (kallad data) som används för att föra över datat till min JTable sen.
+        int rows = canvasEventsArray.length;
+        data = new Object[rows][4];
+        int row = 0;
+        for (CanvasEvent canvasEvent : canvasEventsArray) {
+            //test
 //         System.out.println(canvasEvent.getTitle() + canvasEvent.getLocationName() + canvasEvent.getLocationAddress() + canvasEvent.getDescription());
-         //Ladda JTable
-         data[row][0] = canvasEvent.getTitle();
-         data[row][1] = canvasEvent.getLocationName();
-         data[row][2] = canvasEvent.getLocationAddress();
-         data[row][3] = canvasEvent.getDescription();
-      }
-      initTable();
-   }
-   
-   //Relaterar arrayen data till JTable(tblCalendarEvents) som visar upp innehållet   
-   private void initTable() {
-      
-      String[] columnNames = {"Title", "Location", "Address", "Details"};
-      tblModel = new DefaultTableModel(this.data, columnNames);
-      tblCalendarEvents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-      tblCalendarEvents.setModel(tblModel);
-      tblCalendarEvents.getColumnModel().getColumn(0).setPreferredWidth(10);
-      tblCalendarEvents.getColumnModel().getColumn(1).setPreferredWidth(10);
-      tblCalendarEvents.getColumnModel().getColumn(2).setPreferredWidth(10);
-      tblCalendarEvents.getColumnModel().getColumn(3).setPreferredWidth(20);
-      tblCalendarEvents.setShowGrid(true);
-   }
+            //Ladda JTable
+            data[row][0] = canvasEvent.getTitle();
+            data[row][1] = canvasEvent.getLocationName();
+            data[row][2] = canvasEvent.getLocationAddress();
+            data[row][3] = canvasEvent.getDescription();
+        }
+        initTable();
+    }
+
+    //Relaterar arrayen data till JTable(tblCalendarEvents) som visar upp innehållet   
+    private void initTable() {
+
+        String[] columnNames = {"Title", "Location", "Address", "Details"};
+        tblModel = new DefaultTableModel(this.data, columnNames);
+        tblCalendarEvents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblCalendarEvents.setModel(tblModel);
+        tblCalendarEvents.getColumnModel().getColumn(0).setPreferredWidth(10);
+        tblCalendarEvents.getColumnModel().getColumn(1).setPreferredWidth(10);
+        tblCalendarEvents.getColumnModel().getColumn(2).setPreferredWidth(10);
+        tblCalendarEvents.getColumnModel().getColumn(3).setPreferredWidth(20);
+        tblCalendarEvents.setShowGrid(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -244,47 +244,47 @@ public class ClientGUI extends javax.swing.JFrame {
    }// </editor-fold>//GEN-END:initComponents
 
    private void btnGetScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetScheduleActionPerformed
-      // TODO add your handling code here:
-      //Kör metoden som hämtar JSON-data från TimeEdit
-      //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
-      //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
-      //och skriver ut namne på kursen från datan i TimeEditEvents column-array.
+       // TODO add your handling code here:
+       //Kör metoden som hämtar JSON-data från TimeEdit
+       //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
+       //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
+       //och skriver ut namne på kursen från datan i TimeEditEvents column-array.
    }//GEN-LAST:event_btnGetScheduleActionPerformed
 
    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
-      // TODO add your handling code here:
-      //Visa JPanel där man kan redigera "Details" för ett event
-      pnlEditEvent.setVisible(true);
-      btnEditEvent.setVisible(false);
-      btnLoadToCanvas.setVisible(false);
-      btnGetSchedule.setVisible(false);
+       // TODO add your handling code here:
+       //Visa JPanel där man kan redigera "Details" för ett event
+       pnlEditEvent.setVisible(true);
+       btnEditEvent.setVisible(false);
+       btnLoadToCanvas.setVisible(false);
+       btnGetSchedule.setVisible(false);
    }//GEN-LAST:event_btnEditEventActionPerformed
 
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
-      // TODO add your handling code here:
-      //Kör metod som POSTar canvasEvent-objekten till Canvas
-      //Visa pop-up som bekräftelse på om det funkat eller ej... (lista vilka som postats och vilka som misslyckats?)
+       // TODO add your handling code here:
+       //Kör metod som POSTar canvasEvent-objekten till Canvas
+       //Visa pop-up som bekräftelse på om det funkat eller ej... (lista vilka som postats och vilka som misslyckats?)
    }//GEN-LAST:event_btnLoadToCanvasActionPerformed
 
    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-      // TODO add your handling code here:
-      details = txtEventDetails.getText();
-      //Lägg till kod som sparar in de nya detailsen till motsvarande
-      //canvasEvent-objekt i canvasEvent-arrayen och visar infon i tabellen
-      txtEventDetails.setText("");
-      pnlEditEvent.setVisible(false);
-      btnEditEvent.setVisible(true);
-      btnLoadToCanvas.setVisible(true);
-      btnGetSchedule.setVisible(true);
+       // TODO add your handling code here:
+       details = txtEventDetails.getText();
+       //Lägg till kod som sparar in de nya detailsen till motsvarande
+       //canvasEvent-objekt i canvasEvent-arrayen och visar infon i tabellen
+       txtEventDetails.setText("");
+       pnlEditEvent.setVisible(false);
+       btnEditEvent.setVisible(true);
+       btnLoadToCanvas.setVisible(true);
+       btnGetSchedule.setVisible(true);
    }//GEN-LAST:event_btnSaveActionPerformed
 
    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-      // TODO add your handling code here:
-      txtEventDetails.setText("");
-      pnlEditEvent.setVisible(false);
-      btnEditEvent.setVisible(true);
-      btnLoadToCanvas.setVisible(true);
-      btnGetSchedule.setVisible(true);
+       // TODO add your handling code here:
+       txtEventDetails.setText("");
+       pnlEditEvent.setVisible(false);
+       btnEditEvent.setVisible(true);
+       btnLoadToCanvas.setVisible(true);
+       btnGetSchedule.setVisible(true);
    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
