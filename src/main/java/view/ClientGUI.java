@@ -5,6 +5,7 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import model.CanvasEvent;
@@ -268,20 +269,17 @@ public class ClientGUI extends javax.swing.JFrame {
 
    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
       // TODO add your handling code here:
-      //Lägg till kod som sparar in de nya detailsen tll rätt ställe och visar den i tabellen
-      if (txtEventDetails.getText()==null) {
-         
-      } else {
-         details = txtEventDetails.getText();
-         pnlEditEvent.setVisible(false);
-         btnEditEvent.setVisible(true);
-         btnLoadToCanvas.setVisible(true);
-         btnGetSchedule.setVisible(true);
-      }
+      details = txtEventDetails.getText();
+      //Lägg till kod som sparar in de nya detailsen till rätt ställe i canvasEvent-arrayen och visar infon i tabellen
+      pnlEditEvent.setVisible(false);
+      btnEditEvent.setVisible(true);
+      btnLoadToCanvas.setVisible(true);
+      btnGetSchedule.setVisible(true);
    }//GEN-LAST:event_btnSaveActionPerformed
 
    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
       // TODO add your handling code here:
+      txtEventDetails.setText("");
       pnlEditEvent.setVisible(false);
       btnEditEvent.setVisible(true);
       btnLoadToCanvas.setVisible(true);
