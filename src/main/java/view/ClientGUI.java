@@ -271,6 +271,7 @@ public class ClientGUI extends javax.swing.JFrame {
       // TODO add your handling code here:
       details = txtEventDetails.getText();
       //Lägg till kod som sparar in de nya detailsen till rätt ställe i canvasEvent-arrayen och visar infon i tabellen
+      txtEventDetails.setText("");
       pnlEditEvent.setVisible(false);
       btnEditEvent.setVisible(true);
       btnLoadToCanvas.setVisible(true);
