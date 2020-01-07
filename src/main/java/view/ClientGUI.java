@@ -61,21 +61,6 @@ public class ClientGUI extends javax.swing.JFrame {
       tblCalendarEvents.setShowGrid(true);
    }
 
-    //Relaterar arrayen data till JTable(tblCalendarEvents) som visar upp innehållet   
-    //aka initTable() i GuiDbDemo.java i D0024E
-    private void initTable() {
-
-        String[] columnNames = {"Title", "Location", "Address", "Details"};
-        tblModel = new DefaultTableModel(this.data, columnNames);
-        tblCalendarEvents.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tblCalendarEvents.setModel(tblModel);
-        tblCalendarEvents.getColumnModel().getColumn(0).setPreferredWidth(10);
-        tblCalendarEvents.getColumnModel().getColumn(1).setPreferredWidth(10);
-        tblCalendarEvents.getColumnModel().getColumn(2).setPreferredWidth(10);
-        tblCalendarEvents.getColumnModel().getColumn(3).setPreferredWidth(20);
-        tblCalendarEvents.setShowGrid(true);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
