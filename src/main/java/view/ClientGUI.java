@@ -25,7 +25,6 @@ public class ClientGUI extends javax.swing.JFrame {
         initComponents();
     }
 
-    /*
     private void loadJTableFromJson(String jsonInput) {
         //Konvertera JSON-Array till en Array med Java-objekt (Av en klass som jag skapat som matchar)
         //Finns flera olika 3e-parts-bibliotek som kan användas för detta på https://www.json.org/json-en.html
@@ -47,7 +46,7 @@ public class ClientGUI extends javax.swing.JFrame {
         }
         initTable();
     }
-     */
+
     //Relaterar arrayen data till JTable(tblCalendarEvents) som visar upp innehållet   
     //aka initTable() i GuiDbDemo.java i D0024E
     private void initTable() {
