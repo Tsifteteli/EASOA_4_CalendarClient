@@ -14,19 +14,19 @@ public class ReservationInfo {
     private int reservationlimit;
     private int reservationcount;
 
-    public void getReservationlimit(int reservationlimit) {
+    public void setReservationlimit(int reservationlimit) {
         this.reservationlimit = reservationlimit;
     }
 
-    public int setReservationlimit() {
+    public int getReservationlimit() {
         return reservationlimit;
     }
 
-    public void getReservationcount(int reservationcount) {
+    public void setReservationcount(int reservationcount) {
         this.reservationcount = reservationcount;
     }
 
-    public int setReservationcount() {
+    public int getReservationcount() {
         return reservationcount;
     }
 
