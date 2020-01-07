@@ -26,6 +26,7 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import model.CanvasEvent;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -94,6 +95,14 @@ public class ClientControler {
     public void setCanvasCalendar(CanvasEvent[] canvasEventsArray) {
        //Ta canvasEvent-arrayen och posta respektive objekt i den som ett kalenderobjekt
        //(Börja med att försöka posa ett objekt, sen hel array)
+       CanvasEvent canvasEvent = new CanvasEvent();
+       canvasEvent.setContextCode("user_65238");
+       canvasEvent.setTitle("Test från NB 1");
+       canvasEvent.setDescription("Detta är et test!");
+       canvasEvent.setStartAt(LocalDateTime.of(2020,01,07,14,30));
+       canvasEvent.setEndAt(LocalDateTime.of(2020,01,07,15,30));
+       canvasEvent.setLocationName("Biblioteket");
+       canvasEvent.setLocationAddress("Storgatan 5");
        
        //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
       //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
@@ -101,12 +110,17 @@ public class ClientControler {
       Client client = ClientBuilder.newClient();
       //Går att göra om Client och WebTarget så de går at återanvända
       //istället för att skapa dem i varje metod - Görs så nu för exemplets skull.
-      WebTarget target = client.target(SakilaClient.BASE_URI);
+      WebTarget target = client.target(ClientControler.CANVAS_URI);
       
       //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
       Form form = new Form();
-      form.param("first", txtFName.getText());
-      form.param("last", txtLName.getText());
+      form.param("calendar_event[context_code]", canvasEvent.getContextCode());
+      form.param("calendar_event[title]", canvasEvent.getTitle());
+      form.param("calendar_event[description]", canvasEvent.getDescription());
+      form.param("calendar_event[start_at]", canvasEvent.getStartAt());
+      form.param("calendar_event[end_at]", canvasEvent.getEndAt());
+      form.param("calendar_event[location_name]", canvasEvent.getLocationName());
+      form.param("calendar_event[location_address]", canvasEvent.getLocationAddress());
       
       //Skapa en anropsbyggare genom att använda target som håller URI...
       //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
