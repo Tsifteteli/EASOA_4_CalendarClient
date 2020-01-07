@@ -18,12 +18,14 @@ public class ClientGUI extends javax.swing.JFrame {
       //2D array för data til JTable (Tablemodel)
    private Object[][] data;
    private DefaultTableModel tblModel;
+   private String details;
 
    /**
     * Creates new form ClientGUI
     */
    public ClientGUI() {
       initComponents();
+      pnlEditEvent.setVisible(false);
    }
    
    private void loadEventsToJTable(CanvasEvent[] canvasEventsArray) {
@@ -77,6 +79,11 @@ public class ClientGUI extends javax.swing.JFrame {
       jLabel1 = new javax.swing.JLabel();
       jLabel2 = new javax.swing.JLabel();
       lblCourseName = new javax.swing.JLabel();
+      pnlEditEvent = new javax.swing.JPanel();
+      jScrollPane2 = new javax.swing.JScrollPane();
+      txtEventDetails = new javax.swing.JTextArea();
+      btnSave = new javax.swing.JButton();
+      btnCancel = new javax.swing.JButton();
 
       setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -127,29 +134,82 @@ public class ClientGUI extends javax.swing.JFrame {
       lblCourseName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
       lblCourseName.setText("Course:");
 
+      txtEventDetails.setColumns(20);
+      txtEventDetails.setRows(5);
+      jScrollPane2.setViewportView(txtEventDetails);
+
+      btnSave.setText("Save");
+      btnSave.addActionListener(new java.awt.event.ActionListener() {
+         public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnSaveActionPerformed(evt);
+         }
+      });
+
+      btnCancel.setText("Cancel");
+      btnCancel.addActionListener(new java.awt.event.ActionListener() {
+         public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnCancelActionPerformed(evt);
+         }
+      });
+
+      javax.swing.GroupLayout pnlEditEventLayout = new javax.swing.GroupLayout(pnlEditEvent);
+      pnlEditEvent.setLayout(pnlEditEventLayout);
+      pnlEditEventLayout.setHorizontalGroup(
+         pnlEditEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+         .addGroup(pnlEditEventLayout.createSequentialGroup()
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 26, Short.MAX_VALUE))
+         .addGroup(pnlEditEventLayout.createSequentialGroup()
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(125, 125, 125))
+      );
+      pnlEditEventLayout.setVerticalGroup(
+         pnlEditEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+         .addGroup(pnlEditEventLayout.createSequentialGroup()
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(pnlEditEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+               .addComponent(btnSave)
+               .addComponent(btnCancel))
+            .addGap(0, 20, Short.MAX_VALUE))
+      );
+
       javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
       getContentPane().setLayout(layout);
       layout.setHorizontalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(layout.createSequentialGroup()
-            .addGap(22, 22, 22)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-               .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-               .addComponent(lblCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                .addGroup(layout.createSequentialGroup()
+                  .addGap(22, 22, 22)
                   .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                     .addComponent(jLabel1)
-                     .addComponent(jLabel2))
-                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                     .addComponent(jTextField1)
-                     .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))))
-            .addGap(42, 42, 42)
+                     .addComponent(lblCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                           .addComponent(jLabel1)
+                           .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                           .addComponent(jTextField1)
+                           .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))))
+                  .addGap(122, 122, 122))
+               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                  .addContainerGap()
+                  .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-               .addComponent(btnLoadToCanvas)
-               .addComponent(btnEditEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-               .addComponent(btnGetSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addContainerGap(23, Short.MAX_VALUE))
+               .addGroup(layout.createSequentialGroup()
+                  .addGap(42, 42, 42)
+                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                     .addComponent(btnEditEvent, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                     .addComponent(btnGetSchedule, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                     .addComponent(btnLoadToCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                  .addContainerGap())
+               .addGroup(layout.createSequentialGroup()
+                  .addGap(18, 18, 18)
+                  .addComponent(pnlEditEvent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,18 +225,18 @@ public class ClientGUI extends javax.swing.JFrame {
                   .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                      .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                      .addComponent(jLabel2))))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+            .addGap(18, 18, 18)
             .addComponent(lblCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                  .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addContainerGap())
-               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+               .addGroup(layout.createSequentialGroup()
                   .addComponent(btnEditEvent)
-                  .addGap(148, 148, 148)
-                  .addComponent(btnLoadToCanvas)
-                  .addGap(25, 25, 25))))
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(pnlEditEvent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(btnLoadToCanvas))
+               .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+            .addGap(25, 25, 25))
       );
 
       pack();
@@ -193,6 +253,10 @@ public class ClientGUI extends javax.swing.JFrame {
    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
       // TODO add your handling code here:
       //Visa pop-up där man kan redigera "Details" för ett event
+      pnlEditEvent.setVisible(true);
+      btnEditEvent.setVisible(false);
+      btnLoadToCanvas.setVisible(false);
+      btnGetSchedule.setVisible(false);
       //Spara ner de nya details till motsvarande canvasEvent-objekt i canvasEvent-arrayen
    }//GEN-LAST:event_btnEditEventActionPerformed
 
@@ -201,6 +265,28 @@ public class ClientGUI extends javax.swing.JFrame {
       //Kör metod som POSTar canvasEvent-objekten till Canvas
       //Visa pop-up som bekräftelse på om det funkat eller ej... (lista vilka som postats och vilka som misslyckats?)
    }//GEN-LAST:event_btnLoadToCanvasActionPerformed
+
+   private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+      // TODO add your handling code here:
+      //Lägg till kod som sparar in de nya detailsen tll rätt ställe och visar den i tabellen
+      if (txtEventDetails.getText()==null) {
+         
+      } else {
+         details = txtEventDetails.getText();
+         pnlEditEvent.setVisible(false);
+         btnEditEvent.setVisible(true);
+         btnLoadToCanvas.setVisible(true);
+         btnGetSchedule.setVisible(true);
+      }
+   }//GEN-LAST:event_btnSaveActionPerformed
+
+   private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+      // TODO add your handling code here:
+      pnlEditEvent.setVisible(false);
+      btnEditEvent.setVisible(true);
+      btnLoadToCanvas.setVisible(true);
+      btnGetSchedule.setVisible(true);
+   }//GEN-LAST:event_btnCancelActionPerformed
 
    /**
     * @param args the command line arguments
@@ -238,15 +324,20 @@ public class ClientGUI extends javax.swing.JFrame {
    }
 
    // Variables declaration - do not modify//GEN-BEGIN:variables
+   private javax.swing.JButton btnCancel;
    private javax.swing.JButton btnEditEvent;
    private javax.swing.JButton btnGetSchedule;
    private javax.swing.JButton btnLoadToCanvas;
+   private javax.swing.JButton btnSave;
    private javax.swing.JLabel jLabel1;
    private javax.swing.JLabel jLabel2;
    private javax.swing.JScrollPane jScrollPane1;
+   private javax.swing.JScrollPane jScrollPane2;
    private javax.swing.JTextField jTextField1;
    private javax.swing.JTextField jTextField2;
    private javax.swing.JLabel lblCourseName;
+   private javax.swing.JPanel pnlEditEvent;
    private javax.swing.JTable tblCalendarEvents;
+   private javax.swing.JTextArea txtEventDetails;
    // End of variables declaration//GEN-END:variables
 }
