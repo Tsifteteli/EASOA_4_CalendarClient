@@ -253,12 +253,11 @@ public class ClientGUI extends javax.swing.JFrame {
 
    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
       // TODO add your handling code here:
-      //Visa pop-up där man kan redigera "Details" för ett event
+      //Visa JPanel där man kan redigera "Details" för ett event
       pnlEditEvent.setVisible(true);
       btnEditEvent.setVisible(false);
       btnLoadToCanvas.setVisible(false);
       btnGetSchedule.setVisible(false);
-      //Spara ner de nya details till motsvarande canvasEvent-objekt i canvasEvent-arrayen
    }//GEN-LAST:event_btnEditEventActionPerformed
 
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
@@ -270,7 +269,8 @@ public class ClientGUI extends javax.swing.JFrame {
    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
       // TODO add your handling code here:
       details = txtEventDetails.getText();
-      //Lägg till kod som sparar in de nya detailsen till rätt ställe i canvasEvent-arrayen och visar infon i tabellen
+      //Lägg till kod som sparar in de nya detailsen till motsvarande
+      //canvasEvent-objekt i canvasEvent-arrayen och visar infon i tabellen
       txtEventDetails.setText("");
       pnlEditEvent.setVisible(false);
       btnEditEvent.setVisible(true);
