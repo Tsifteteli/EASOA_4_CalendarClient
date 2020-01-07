@@ -16,6 +16,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import model.CanvasEvent;
 
 /**
  *
@@ -80,8 +90,38 @@ public class ClientControler {
 
     }
 
-    public void setCanvasCalendar() {
-
+    //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
+    public void setCanvasCalendar(CanvasEvent[] canvasEventsArray) {
+       //Ta canvasEvent-arrayen och posta respektive objekt i den som ett kalenderobjekt
+       //(Börja med att försöka posa ett objekt, sen hel array)
+       
+       //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
+      //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
+      //jersey-client dependencyn behöver även jersey-hk2 dependencyn av samma version för att funka.
+      Client client = ClientBuilder.newClient();
+      //Går att göra om Client och WebTarget så de går at återanvända
+      //istället för att skapa dem i varje metod - Görs så nu för exemplets skull.
+      WebTarget target = client.target(SakilaClient.BASE_URI);
+      
+      //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
+      Form form = new Form();
+      form.param("first", txtFName.getText());
+      form.param("last", txtLName.getText());
+      
+      //Skapa en anropsbyggare genom att använda target som håller URI...
+      //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
+      Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+      //Kör anropet med angivn metod, i detta fallet POST, 
+      //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
+      //Kan även vara .put(), .get() eller .delete()
+      Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+      if (r.getStatus() != 201) {
+         JOptionPane.showMessageDialog(this, "FEL: " + r.getStatus() + " Ange för- och efternamn!");
+      } else {
+         getActorsByURL();//Updatera tabellen för att även visa senaste
+         //Visa sökvägen till den nyligt skpade posten
+         JOptionPane.showMessageDialog(this, "Ny post lades till: " + r.getLocation());
+      }
     }
 
     public static void main(String[] args) {
