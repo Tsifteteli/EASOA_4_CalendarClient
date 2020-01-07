@@ -185,6 +185,7 @@ public class ClientGUI extends javax.swing.JFrame {
    private void btnGetScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetScheduleActionPerformed
       // TODO add your handling code here:
       //Kör metoden som hämtar JSON-data från TimeEdit
+      //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
       //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
    }//GEN-LAST:event_btnGetScheduleActionPerformed
 
