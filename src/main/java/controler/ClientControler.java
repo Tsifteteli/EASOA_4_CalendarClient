@@ -39,6 +39,7 @@ public class ClientControler {
     //Grundsökvägen till webservicarna vi vill anropa
     private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
+    private TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
 
     private void getTimeEditCalendar() {
         try {
@@ -88,69 +89,87 @@ public class ClientControler {
         //Finns flera olika 3e-parts-bibliotek som kan användas för detta på https://www.json.org/json-en.html
         //I detta fallet används google-gson
 
-        TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
         JsonObject jsonObject = new Gson().fromJson(jsonInput, JsonObject.class);
 
         String[] columnheaders = new Gson().fromJson(jsonObject.get("columnheaders"), String[].class);
         ReservationInfo info = new Gson().fromJson(jsonObject.get("info"), ReservationInfo.class);
         TimeEditEvent[] timeEditEvent = new Gson().fromJson(jsonObject.get("reservations"), TimeEditEvent[].class);
 
-        timeEditCalendar.setReservations(timeEditEvent);
-        timeEditCalendar.setInfo(info);
-        timeEditCalendar.setColumnheaders(columnheaders);
+        this.timeEditCalendar.setInfo(info);
+        this.timeEditCalendar.setReservations(timeEditEvent);
+        this.timeEditCalendar.setColumnheaders(columnheaders);
+
+    }
+
+    private void ConvertTimeEditEventToCanvasEvent() {
+
+        CanvasEvent[] canvasEvent = new CanvasEvent[this.timeEditCalendar.getInfo().getReservationcount()];
+
+        for (int i = 0; i < canvasEvent.length; i++) {
+            canvasEvent[i] = new CanvasEvent();
+        }
+
+        //Statisk variabel för varje del, kan ändras till något mer dynamiskt som känner av vilken typ
+        //som finns i coulmnheader för att sedan föra över rätt typ till canvas
+        for (int i = 0; i < this.timeEditCalendar.getReservations().length; i++) {
+            canvasEvent[i].setLocationName(this.timeEditCalendar.getReservations()[i].getColumns()[1]);
+            canvasEvent[i].setTitle();
+            canvasEvent[i].setLocationAddress();
+        }
 
     }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
     public void setCanvasCalendar(CanvasEvent[] canvasEventsArray) {
-       //Ta canvasEvent-arrayen och posta respektive objekt i den som ett kalenderobjekt
-       //(Börja med att försöka posa ett objekt, sen hel array)
-       CanvasEvent canvasEvent = new CanvasEvent();
-       canvasEvent.setContextCode("user_65238");
-       canvasEvent.setTitle("Test från NB 1");
-       canvasEvent.setDescription("Detta är et test!");
-       canvasEvent.setStartAt(LocalDateTime.of(2020,01,07,14,30));
-       canvasEvent.setEndAt(LocalDateTime.of(2020,01,07,15,30));
-       canvasEvent.setLocationName("Biblioteket");
-       canvasEvent.setLocationAddress("Storgatan 5");
-       
-       //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
-      //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
-      //jersey-client dependencyn behöver även jersey-hk2 dependencyn av samma version för att funka.
-      Client client = ClientBuilder.newClient();
-      //Går att göra om Client och WebTarget så de går at återanvända
-      //istället för att skapa dem i varje metod - Görs så nu för exemplets skull.
-      WebTarget target = client.target(ClientControler.CANVAS_URI);
-      
-      //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
-      Form form = new Form();
-      form.param("calendar_event[context_code]", canvasEvent.getContextCode());
-      form.param("calendar_event[title]", canvasEvent.getTitle());
-      form.param("calendar_event[description]", canvasEvent.getDescription());
-      form.param("calendar_event[start_at]", canvasEvent.getStartAt());
-      form.param("calendar_event[end_at]", canvasEvent.getEndAt());
-      form.param("calendar_event[location_name]", canvasEvent.getLocationName());
-      form.param("calendar_event[location_address]", canvasEvent.getLocationAddress());
-      
-      //Skapa en anropsbyggare genom att använda target som håller URI...
-      //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
-      Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
-      //Kör anropet med angivn metod, i detta fallet POST, 
-      //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
-      //Kan även vara .put(), .get() eller .delete()
-      Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-      if (r.getStatus() != 201) {
-         JOptionPane.showMessageDialog(this, "FEL: " + r.getStatus() + " Ange för- och efternamn!");
-      } else {
-         getActorsByURL();//Updatera tabellen för att även visa senaste
-         //Visa sökvägen till den nyligt skpade posten
-         JOptionPane.showMessageDialog(this, "Ny post lades till: " + r.getLocation());
-      }
+        //Ta canvasEvent-arrayen och posta respektive objekt i den som ett kalenderobjekt
+        //(Börja med att försöka posa ett objekt, sen hel array)
+        CanvasEvent canvasEvent = new CanvasEvent();
+        canvasEvent.setContextCode("user_65238");
+        canvasEvent.setTitle("Test från NB 1");
+        canvasEvent.setDescription("Detta är et test!");
+        canvasEvent.setStartAt(LocalDateTime.of(2020, 01, 07, 14, 30));
+        canvasEvent.setEndAt(LocalDateTime.of(2020, 01, 07, 15, 30));
+        canvasEvent.setLocationName("Biblioteket");
+        canvasEvent.setLocationAddress("Storgatan 5");
+
+        //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
+        //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
+        //jersey-client dependencyn behöver även jersey-hk2 dependencyn av samma version för att funka.
+        Client client = ClientBuilder.newClient();
+        //Går att göra om Client och WebTarget så de går at återanvända
+        //istället för att skapa dem i varje metod - Görs så nu för exemplets skull.
+        WebTarget target = client.target(ClientControler.CANVAS_URI);
+
+        //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
+        Form form = new Form();
+        form.param("calendar_event[context_code]", canvasEvent.getContextCode());
+        form.param("calendar_event[title]", canvasEvent.getTitle());
+        form.param("calendar_event[description]", canvasEvent.getDescription());
+        form.param("calendar_event[start_at]", canvasEvent.getStartAt());
+        form.param("calendar_event[end_at]", canvasEvent.getEndAt());
+        form.param("calendar_event[location_name]", canvasEvent.getLocationName());
+        form.param("calendar_event[location_address]", canvasEvent.getLocationAddress());
+
+        //Skapa en anropsbyggare genom att använda target som håller URI...
+        //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
+        Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+        //Kör anropet med angivn metod, i detta fallet POST, 
+        //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
+        //Kan även vara .put(), .get() eller .delete()
+        Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+        if (r.getStatus() != 201) {
+            JOptionPane.showMessageDialog(this, "FEL: " + r.getStatus() + " Ange för- och efternamn!");
+        } else {
+            getActorsByURL();//Updatera tabellen för att även visa senaste
+            //Visa sökvägen till den nyligt skpade posten
+            JOptionPane.showMessageDialog(this, "Ny post lades till: " + r.getLocation());
+        }
     }
 
     public static void main(String[] args) {
         ClientControler run = new ClientControler();
         run.getTimeEditCalendar();
+        run.ConvertTimeEditEventToCanvasEvent();
     }
 
 }
