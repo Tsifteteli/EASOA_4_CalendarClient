@@ -99,18 +99,6 @@ public class ClientControler {
         timeEditCalendar.setInfo(info);
         timeEditCalendar.setColumnheaders(columnheaders);
 
-//        for (int i = 0; i < timeEditEvent.length; i++) {
-//
-//            System.out.printf("%s %s %s %s %s\n",
-//                    timeEditEvent[i].getId(),
-//                    timeEditEvent[i].getStartdate(),
-//                    timeEditEvent[i].getStarttime(),
-//                    timeEditEvent[i].getEnddate(),
-//                    timeEditEvent[i].getEndtime());
-//            for (int j = 0; j < timeEditEvent[i].getColumns().length; j++) {
-//                System.out.printf("%s\n", timeEditEvent[i].getColumns()[j]);
-//            }
-//        }
     }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
