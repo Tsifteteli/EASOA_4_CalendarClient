@@ -40,6 +40,7 @@ public class ClientControler {
     private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
     private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
+    private TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
 
     private void getTimeEditCalendar() {
         try {
@@ -89,29 +90,34 @@ public class ClientControler {
         //Finns flera olika 3e-parts-bibliotek som kan användas för detta på https://www.json.org/json-en.html
         //I detta fallet används google-gson
 
-        TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
         JsonObject jsonObject = new Gson().fromJson(jsonInput, JsonObject.class);
 
         String[] columnheaders = new Gson().fromJson(jsonObject.get("columnheaders"), String[].class);
         ReservationInfo info = new Gson().fromJson(jsonObject.get("info"), ReservationInfo.class);
         TimeEditEvent[] timeEditEvent = new Gson().fromJson(jsonObject.get("reservations"), TimeEditEvent[].class);
 
-        timeEditCalendar.setReservations(timeEditEvent);
-        timeEditCalendar.setInfo(info);
-        timeEditCalendar.setColumnheaders(columnheaders);
+        this.timeEditCalendar.setInfo(info);
+        this.timeEditCalendar.setReservations(timeEditEvent);
+        this.timeEditCalendar.setColumnheaders(columnheaders);
 
-//        for (int i = 0; i < timeEditEvent.length; i++) {
-//
-//            System.out.printf("%s %s %s %s %s\n",
-//                    timeEditEvent[i].getId(),
-//                    timeEditEvent[i].getStartdate(),
-//                    timeEditEvent[i].getStarttime(),
-//                    timeEditEvent[i].getEnddate(),
-//                    timeEditEvent[i].getEndtime());
-//            for (int j = 0; j < timeEditEvent[i].getColumns().length; j++) {
-//                System.out.printf("%s\n", timeEditEvent[i].getColumns()[j]);
-//            }
-//        }
+    }
+
+    private void ConvertTimeEditEventToCanvasEvent() {
+
+        CanvasEvent[] canvasEvent = new CanvasEvent[this.timeEditCalendar.getInfo().getReservationcount()];
+
+        for (int i = 0; i < canvasEvent.length; i++) {
+            canvasEvent[i] = new CanvasEvent();
+        }
+
+        //Statisk variabel för varje del, kan ändras till något mer dynamiskt som känner av vilken typ
+        //som finns i coulmnheader för att sedan föra över rätt typ till canvas
+        for (int i = 0; i < this.timeEditCalendar.getReservations().length; i++) {
+            canvasEvent[i].setLocationName(this.timeEditCalendar.getReservations()[i].getColumns()[1]);
+            canvasEvent[i].setTitle();
+            canvasEvent[i].setLocationAddress();
+        }
+
     }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
@@ -181,6 +187,7 @@ public class ClientControler {
         ClientControler run = new ClientControler();
         run.getTimeEditCalendar();
 //        run.setCanvasCalendar();
+        run.ConvertTimeEditEventToCanvasEvent();
     }
 
 }
