@@ -15,7 +15,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -25,10 +24,11 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import model.CanvasEvent;
-import java.time.LocalDateTime;
+import javax.ws.rs.core.Feature;
 import model.ReservationInfo;
 import model.TimeEditCalendar;
 import model.TimeEditEvent;
+import org.glassfish.jersey.client.oauth2.OAuth2ClientSupport;
 
 /**
  *
@@ -39,6 +39,7 @@ public class ClientControler {
     //Grundsökvägen till webservicarna vi vill anropa
     private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
+    private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
     private TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
 
     private void getTimeEditCalendar() {
@@ -123,55 +124,72 @@ public class ClientControler {
     }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
-    public void setCanvasCalendar(CanvasEvent[] canvasEventsArray) {
-        //Ta canvasEvent-arrayen och posta respektive objekt i den som ett kalenderobjekt
-        //(Börja med att försöka posa ett objekt, sen hel array)
-        CanvasEvent canvasEvent = new CanvasEvent();
-        canvasEvent.setContextCode("user_65238");
-        canvasEvent.setTitle("Test från NB 1");
-        canvasEvent.setDescription("Detta är et test!");
-        canvasEvent.setStartAt(LocalDateTime.of(2020, 01, 07, 14, 30));
-        canvasEvent.setEndAt(LocalDateTime.of(2020, 01, 07, 15, 30));
-        canvasEvent.setLocationName("Biblioteket");
-        canvasEvent.setLocationAddress("Storgatan 5");
+    public void setCanvasCalendar() { //Lägg in CanvasEvent[] canvasEventsArray som inparameter sen
+       //Ta canvasEvent-arrayen och posta respektive objekt i den som ett kalenderobjekt
+       //(Börja med att försöka posa ett objekt, sen hel array)
+       //Testobjekt
+       CanvasEvent canvasEvent = new CanvasEvent();
+       canvasEvent.setContextCode("user_65238");
+       canvasEvent.setTitle("Test från NB 2");
+       canvasEvent.setDescription("Detta är et test!");
+       canvasEvent.setStartAt("2020-01-09T17:00:00Z");
+       canvasEvent.setEndAt("2020-01-09T19:00:00Z");
+       canvasEvent.setLocationName("Biblioteket");
+       canvasEvent.setLocationAddress("Storgatan 5");
+       
+      //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
+      //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
+      //jersey-client dependencyn behöver även jersey-hk2 dependencyn av samma version för att funka.
+      //Går att göra om Client och WebTarget så de går at återanvända
+      //istället för att skapa dem i varje metod - Görs så nu för exemplets skull.
+      
+//      //Hur man gör en GET-request med OAuth2-autentisering
+//      public Response bearerAuthenticationWithOAuth2AtClientLevel(String token) {
+//          Feature feature = OAuth2ClientSupport.feature(token);
+//          Client client = ClientBuilder.newBuilder().register(feature).build();
+//
+//          return client.target("https://sse.examples.org/")
+//            .request()
+//            .get();
+//      }
+      
+      Feature feature = OAuth2ClientSupport.feature(TOKEN);
+      
+      Client client = ClientBuilder.newBuilder().register(feature).build();
 
-        //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
-        //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
-        //jersey-client dependencyn behöver även jersey-hk2 dependencyn av samma version för att funka.
-        Client client = ClientBuilder.newClient();
-        //Går att göra om Client och WebTarget så de går at återanvända
-        //istället för att skapa dem i varje metod - Görs så nu för exemplets skull.
-        WebTarget target = client.target(ClientControler.CANVAS_URI);
-
-        //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
-        Form form = new Form();
-        form.param("calendar_event[context_code]", canvasEvent.getContextCode());
-        form.param("calendar_event[title]", canvasEvent.getTitle());
-        form.param("calendar_event[description]", canvasEvent.getDescription());
-        form.param("calendar_event[start_at]", canvasEvent.getStartAt());
-        form.param("calendar_event[end_at]", canvasEvent.getEndAt());
-        form.param("calendar_event[location_name]", canvasEvent.getLocationName());
-        form.param("calendar_event[location_address]", canvasEvent.getLocationAddress());
-
-        //Skapa en anropsbyggare genom att använda target som håller URI...
-        //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
-        Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
-        //Kör anropet med angivn metod, i detta fallet POST, 
-        //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
-        //Kan även vara .put(), .get() eller .delete()
-        Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-        if (r.getStatus() != 201) {
-            JOptionPane.showMessageDialog(this, "FEL: " + r.getStatus() + " Ange för- och efternamn!");
-        } else {
-            getActorsByURL();//Updatera tabellen för att även visa senaste
-            //Visa sökvägen till den nyligt skpade posten
-            JOptionPane.showMessageDialog(this, "Ny post lades till: " + r.getLocation());
-        }
+      WebTarget target = client.target(ClientControler.CANVAS_URI);
+      
+      //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
+      Form form = new Form();
+      form.param("calendar_event[context_code]", canvasEvent.getContextCode());
+      form.param("calendar_event[title]", canvasEvent.getTitle());
+      form.param("calendar_event[description]", canvasEvent.getDescription());
+      form.param("calendar_event[start_at]", canvasEvent.getStartAt());
+      form.param("calendar_event[end_at]", canvasEvent.getEndAt());
+      form.param("calendar_event[location_name]", canvasEvent.getLocationName());
+      form.param("calendar_event[location_address]", canvasEvent.getLocationAddress());
+      
+      //Skapa en anropsbyggare genom att använda target som håller URI...
+      //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
+      Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+      //Kör anropet med angivn metod, i detta fallet POST, 
+      //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
+      //Kan även vara .put(), .get() eller .delete()
+      Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+      if (r.getStatus() != 201) {
+         System.out.println("Någor sket sig... " + r.getStatus());
+//         JOptionPane.showMessageDialog(this, "ERROR: " + r.getStatus() + " Someting went wrong!");
+      } else {
+         System.out.println("Det funkade! ");
+//         //Visa sökvägen till den nyligt skpade posten
+//         JOptionPane.showMessageDialog(this, "New post was aded o calendar: " + r.getLocation());
+      }
     }
 
     public static void main(String[] args) {
         ClientControler run = new ClientControler();
         run.getTimeEditCalendar();
+//        run.setCanvasCalendar();
         run.ConvertTimeEditEventToCanvasEvent();
     }
 
