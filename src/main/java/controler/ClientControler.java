@@ -113,8 +113,11 @@ public class ClientControler {
         //som finns i coulmnheader för att sedan föra över rätt typ till canvas
         for (int i = 0; i < this.timeEditCalendar.getReservations().length; i++) {
             canvasEvent[i].setLocationName(this.timeEditCalendar.getReservations()[i].getColumns()[1]);
-            canvasEvent[i].setTitle();
-            canvasEvent[i].setLocationAddress();
+            canvasEvent[i].setTitle(this.timeEditCalendar.getReservations()[i].getColumns()[3] + " " + this.timeEditCalendar.getReservations()[i].getColumns()[2]);
+            canvasEvent[i].setLocationAddress(this.timeEditCalendar.getReservations()[i].getColumns()[5]);
+            canvasEvent[i].setStartAt(this.timeEditCalendar.getReservations()[i].getStartdate() + "T" + this.timeEditCalendar.getReservations()[i].getStarttime() + "Z");
+            canvasEvent[i].setEndAt(this.timeEditCalendar.getReservations()[i].getEnddate() + "T" + this.timeEditCalendar.getEndtime()[i].getColumns() + "Z");
+            canvasEvent[i].setDescription(this.timeEditCalendar.getReservations()[i].getColumns()[6]);
         }
 
     }
