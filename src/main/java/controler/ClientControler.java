@@ -42,6 +42,23 @@ public class ClientControler {
     private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
     private CanvasEvent[] canvasEvent;
 
+    //P.g.a. hårdkodning av sökning på kurskod kan egentligen en modifikation till getCanvasCalendar
+    //input värde ge ne sträng som designerar vilken kurs som ska hämtas
+    //Där finns också ett timeEditEvent objekt som innehåller alla headers också
+    //som man kan återanvända till GUI:n för att visa headers där.
+    public CanvasEvent[] getTimeEditEvent() {
+        getTimeEditCalendar();
+        return this.canvasEvent;
+    }
+
+    public void setCanvasEvent(CanvasEvent[] canvasEvent) {
+        this.canvasEvent = canvasEvent;
+    }
+
+    public CanvasEvent[] getCanvasEvent() {
+        return this.canvasEvent;
+    }
+
     private void getTimeEditCalendar() {
         try {
             //Använd klassen URL för att peka ut en resurs på WWW
@@ -118,15 +135,6 @@ public class ClientControler {
             this.canvasEvent[i].setEndAt(timeEditCalendar.getReservations()[i].getEnddate() + "T" + timeEditCalendar.getReservations()[i].getEndtime() + "Z");
             this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[7]);
         }
-    }
-
-    //P.g.a. hårdkodning av sökning på kurskod kan egentligen en modifikation till getCanvasCalendar
-    //input värde ge ne sträng som designerar vilken kurs som ska hämtas
-    //Där finns också ett timeEditEvent objekt som innehåller alla headers också
-    //som man kan återanvända till GUI:n för att visa headers där.
-    public CanvasEvent[] getCanvasCalendar() {
-        getTimeEditCalendar();
-        return this.canvasEvent;
     }
     
     public void setContextCode(String contextCode) {

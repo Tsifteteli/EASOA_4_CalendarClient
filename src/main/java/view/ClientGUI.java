@@ -258,14 +258,12 @@ public class ClientGUI extends javax.swing.JFrame {
    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
        // TODO add your handling code here:
        //Visa JPanel där man kan redigera "Details" för ett event
-       if (tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3) != null) {
-           pnlEditEvent.setVisible(true);
-           btnEditEvent.setVisible(false);
-           btnLoadToCanvas.setVisible(false);
-           btnGetSchedule.setVisible(false);
-           //Hårdkodat med vilken kolumn, men det ska vara detljer som ska redigeras
-           txtEventDetails.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3).toString());
-       }
+       pnlEditEvent.setVisible(true);
+       btnEditEvent.setVisible(false);
+       btnLoadToCanvas.setVisible(false);
+       btnGetSchedule.setVisible(false);
+       //Hårdkodat med vilken kolumn, men det ska vara detljer som ska redigeras
+       txtEventDetails.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3).toString());
    }//GEN-LAST:event_btnEditEventActionPerformed
 
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
@@ -286,6 +284,7 @@ public class ClientGUI extends javax.swing.JFrame {
        details = txtEventDetails.getText();
        //Lägg till kod som sparar in de nya detailsen till motsvarande
        //canvasEvent-objekt i canvasEvent-arrayen och visar infon i tabellen
+
        txtEventDetails.setText("");
        pnlEditEvent.setVisible(false);
        btnEditEvent.setVisible(true);
