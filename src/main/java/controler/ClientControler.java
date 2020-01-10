@@ -134,10 +134,10 @@ public class ClientControler {
         //Testobjekt
         CanvasEvent canvasEvent = new CanvasEvent();
         canvasEvent.setContextCode("user_65238");
-        canvasEvent.setTitle("Test från NB 2");
+        canvasEvent.setTitle("Test från NB 3");
         canvasEvent.setDescription("Detta är et test!");
-        canvasEvent.setStartAt("2020-01-09T17:00:00Z");
-        canvasEvent.setEndAt("2020-01-09T19:00:00Z");
+        canvasEvent.setStartAt("2020-01-10T17:00:00Z");
+        canvasEvent.setEndAt("2020-01-10T19:00:00Z");
         canvasEvent.setLocationName("Biblioteket");
         canvasEvent.setLocationAddress("Storgatan 5");
 
@@ -190,9 +190,9 @@ public class ClientControler {
 
     public static void main(String[] args) {
         ClientControler run = new ClientControler();
-        run.getTimeEditCalendar();
-//        run.setCanvasCalendar();
-        run.ConvertTimeEditEventToCanvasEvent();
+//        run.getTimeEditCalendar();
+        run.setCanvasCalendar();
+//        run.ConvertTimeEditEventToCanvasEvent();
     }
 
 }
