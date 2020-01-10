@@ -21,10 +21,9 @@ public class ClientGUI extends javax.swing.JFrame {
     private Object[][] data;
     private DefaultTableModel tblModel;
     private String details;
-    
+
     private ClientControler clientControler = new ClientControler(this);
     private int selectedRow;
-
 
     /**
      * Creates new form ClientGUI
@@ -95,6 +94,7 @@ public class ClientGUI extends javax.swing.JFrame {
         txtEventDetails = new javax.swing.JTextArea();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        lblEditTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,7 +103,7 @@ public class ClientGUI extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+                "Title", "Lokal/plats", "Address", "Detaljer", "Starttid", "Sluttid"
             }
         ));
         jScrollPane1.setViewportView(tblCalendarEvents);
@@ -160,29 +160,36 @@ public class ClientGUI extends javax.swing.JFrame {
             }
         });
 
+        lblEditTitle.setText("lblEditTitle");
+
         javax.swing.GroupLayout pnlEditEventLayout = new javax.swing.GroupLayout(pnlEditEvent);
         pnlEditEvent.setLayout(pnlEditEventLayout);
         pnlEditEventLayout.setHorizontalGroup(
             pnlEditEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlEditEventLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(pnlEditEventLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancel)
                 .addGap(101, 101, 101))
+            .addGroup(pnlEditEventLayout.createSequentialGroup()
+                .addGroup(pnlEditEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEditTitle))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlEditEventLayout.setVerticalGroup(
             pnlEditEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlEditEventLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlEditEventLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblEditTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlEditEventLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSave)
                     .addComponent(btnCancel))
-                .addGap(0, 72, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -241,7 +248,7 @@ public class ClientGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(lblCourseName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addGap(25, 25, 25))
         );
 
@@ -253,20 +260,29 @@ public class ClientGUI extends javax.swing.JFrame {
        //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
        //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
        //och skriver ut namne på kursen från datan i TimeEditEvents column-array.
-       CanvasEvent[] canvasEvent = this.clientControler.getTimeEditEvent();
-       loadEventsToJTable(canvasEvent);
+       this.clientControler.getTimeEditEvent();
+       loadEventsToJTable(this.clientControler.getCanvasEvent());
    }//GEN-LAST:event_btnGetScheduleActionPerformed
 
    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
        // TODO add your handling code here:
        //Visa JPanel där man kan redigera "Details" för ett event
-       pnlEditEvent.setVisible(true);
-       btnEditEvent.setVisible(false);
-       btnLoadToCanvas.setVisible(false);
-       btnGetSchedule.setVisible(false);
-       //Hårdkodat med vilken kolumn, men det ska vara detljer som ska redigeras
-       this.selectedRow = tblCalendarEvents.getSelectedRow();
-       txtEventDetails.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3).toString());
+       if (tblCalendarEvents.getSelectedRow() >= 0) {
+           pnlEditEvent.setVisible(true);
+           lblEditTitle.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 0).toString()
+                   + ", "
+                   + tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 4).toString()
+                   + " - "
+                   + tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 5).toString());
+           btnEditEvent.setVisible(false);
+           btnLoadToCanvas.setVisible(false);
+           btnGetSchedule.setVisible(false);
+           //Hårdkodat med vilken kolumn, men det ska vara detljer som ska redigeras
+           this.selectedRow = tblCalendarEvents.getSelectedRow();
+           txtEventDetails.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3).toString());
+       } else {
+           JOptionPane.showMessageDialog(this, "You must select a row to edit", "Unable to edit selected event", JOptionPane.ERROR_MESSAGE);
+       }
    }//GEN-LAST:event_btnEditEventActionPerformed
 
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
@@ -351,6 +367,7 @@ public class ClientGUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel lblCourseName;
+    private javax.swing.JLabel lblEditTitle;
     private javax.swing.JPanel pnlEditEvent;
     private javax.swing.JTable tblCalendarEvents;
     private javax.swing.JTextArea txtEventDetails;

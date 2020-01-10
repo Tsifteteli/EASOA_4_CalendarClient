@@ -38,17 +38,16 @@ import view.ClientGUI;
  */
 public class ClientControler {
 
-   private ClientGUI clientGui;
+    private ClientGUI clientGui;
 
-   //Grundsökvägen till webservicarna vi vill anropa
+    //Grundsökvägen till webservicarna vi vill anropa
     private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
     private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
     private CanvasEvent[] canvasEvent;
-    
-    
+
     public ClientControler(ClientGUI clientGui) {
-       this.clientGui = clientGui;
+        this.clientGui = clientGui;
     }
 
     //P.g.a. hårdkodning av sökning på kurskod kan egentligen en modifikation till getCanvasCalendar
@@ -144,8 +143,8 @@ public class ClientControler {
             this.canvasEvent[i].setLocationName(timeEditCalendar.getReservations()[i].getColumns()[1]);
             this.canvasEvent[i].setTitle(timeEditCalendar.getReservations()[i].getColumns()[3] + " " + timeEditCalendar.getReservations()[i].getColumns()[2]);
             this.canvasEvent[i].setLocationAddress(timeEditCalendar.getReservations()[i].getColumns()[6]);
-            this.canvasEvent[i].setStartAt(timeEditCalendar.getReservations()[i].getStartdate() + "T" + timeEditCalendar.getReservations()[i].getStarttime() + "Z");
-            this.canvasEvent[i].setEndAt(timeEditCalendar.getReservations()[i].getEnddate() + "T" + timeEditCalendar.getReservations()[i].getEndtime() + "Z");
+            this.canvasEvent[i].setStartAt(timeEditCalendar.getReservations()[i].getStartdate() + " " + timeEditCalendar.getReservations()[i].getStarttime());
+            this.canvasEvent[i].setEndAt(timeEditCalendar.getReservations()[i].getEnddate() + " " + timeEditCalendar.getReservations()[i].getEndtime());
             this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[7]);
         }
     }
@@ -156,7 +155,7 @@ public class ClientControler {
             //I skarp version ska det vara setContextCode("course_" + contextCode);
             //+ fixa kontroll på vad användaren matar in
             this.canvasEvent[i].setContextCode("user_" + contextCode);
-         }
+        }
 
     }
     
@@ -254,13 +253,6 @@ public class ClientControler {
 
     public void editCanvasEvent() {
 
-    }
-
-    public static void main(String[] args) {
-//        ClientControler run = new ClientControler();
-//        run.getTimeEditCalendar();
-//        run.setCanvasCalendar(testArray); //För test
-//        run.ConvertTimeEditEventToCanvasEvent();
     }
 
     private static CanvasEvent[] testArray() {
