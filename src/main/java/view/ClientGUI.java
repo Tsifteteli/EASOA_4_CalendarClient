@@ -260,8 +260,8 @@ public class ClientGUI extends javax.swing.JFrame {
        //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
        //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
        //och skriver ut namne på kursen från datan i TimeEditEvents column-array.
-       CanvasEvent[] canvasEvent = this.clientControler.getTimeEditEvent();
-       loadEventsToJTable(canvasEvent);
+       this.clientControler.getTimeEditEvent();
+       loadEventsToJTable(this.clientControler.getCanvasEvent());
    }//GEN-LAST:event_btnGetScheduleActionPerformed
 
    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed

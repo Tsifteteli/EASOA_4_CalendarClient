@@ -38,17 +38,16 @@ import view.ClientGUI;
  */
 public class ClientControler {
 
-   private ClientGUI clientGui;
+    private ClientGUI clientGui;
 
-   //Grundsökvägen till webservicarna vi vill anropa
+    //Grundsökvägen till webservicarna vi vill anropa
     private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
     private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
     private CanvasEvent[] canvasEvent;
-    
-    
+
     public ClientControler(ClientGUI clientGui) {
-       this.clientGui = clientGui;
+        this.clientGui = clientGui;
     }
 
     //P.g.a. hårdkodning av sökning på kurskod kan egentligen en modifikation till getCanvasCalendar
@@ -151,12 +150,12 @@ public class ClientControler {
     }
 
     public void setContextCode(String contextCode) {
-       
-         for (int i = 0; i < this.canvasEvent.length; i++) {
+
+        for (int i = 0; i < this.canvasEvent.length; i++) {
             //I skarp version ska det vara setContextCode("course_" + contextCode);
             //+ fixa kontroll på vad användaren matar in
             this.canvasEvent[i].setContextCode("user_" + contextCode);
-         }
+        }
 
     }
 
@@ -217,7 +216,7 @@ public class ClientControler {
             Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
             if (r.getStatus() != 201) {
 //                System.out.println("Någor sket sig... " + r.getStatus());
-                         JOptionPane.showMessageDialog(this.clientGui, "Someting went wrong: " + r.getStatus(), "Unable to post calendar event", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this.clientGui, "Someting went wrong: " + r.getStatus(), "Unable to post calendar event", JOptionPane.ERROR_MESSAGE);
             } else {
                 System.out.println("Det funkade! ");
                 //         //Visa sökvägen till den nyligt skpade posten
@@ -228,13 +227,6 @@ public class ClientControler {
 
     public void editCanvasEvent() {
 
-    }
-
-    public static void main(String[] args) {
-//        ClientControler run = new ClientControler();
-//        run.getTimeEditCalendar();
-//        run.setCanvasCalendar(testArray); //För test
-//        run.ConvertTimeEditEventToCanvasEvent();
     }
 
     private static CanvasEvent[] testArray() {
