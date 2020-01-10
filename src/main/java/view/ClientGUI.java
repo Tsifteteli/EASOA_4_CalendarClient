@@ -21,7 +21,8 @@ public class ClientGUI extends javax.swing.JFrame {
     private Object[][] data;
     private DefaultTableModel tblModel;
     private String details;
-    
+    private int selectedRow;
+
     private ClientControler clientControler = new ClientControler();
 
     /**
@@ -251,7 +252,7 @@ public class ClientGUI extends javax.swing.JFrame {
        //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
        //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
        //och skriver ut namne på kursen från datan i TimeEditEvents column-array.
-       CanvasEvent[] canvasEvent = this.clientControler.getCanvasCalendar();
+       CanvasEvent[] canvasEvent = this.clientControler.getTimeEditEvent();
        loadEventsToJTable(canvasEvent);
    }//GEN-LAST:event_btnGetScheduleActionPerformed
 
@@ -263,16 +264,17 @@ public class ClientGUI extends javax.swing.JFrame {
        btnLoadToCanvas.setVisible(false);
        btnGetSchedule.setVisible(false);
        //Hårdkodat med vilken kolumn, men det ska vara detljer som ska redigeras
+       this.selectedRow = tblCalendarEvents.getSelectedRow();
        txtEventDetails.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3).toString());
    }//GEN-LAST:event_btnEditEventActionPerformed
 
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
        // TODO add your handling code here:
        //POSTa canvasEvent-objekten till Canvas
-       String contextCode = JOptionPane.showInputDialog( this, 
-        "Enter the canvas ID number of the course to continue", 
-        "Canvas ID number", 
-        JOptionPane.QUESTION_MESSAGE);
+       String contextCode = JOptionPane.showInputDialog(this,
+               "Enter the canvas ID number of the course to continue",
+               "Canvas ID number",
+               JOptionPane.QUESTION_MESSAGE);
        this.clientControler.setContextCode(contextCode);
        this.clientControler.setCanvasCalendar();
 
@@ -285,6 +287,8 @@ public class ClientGUI extends javax.swing.JFrame {
        //Lägg till kod som sparar in de nya detailsen till motsvarande
        //canvasEvent-objekt i canvasEvent-arrayen och visar infon i tabellen
 
+       clientControler.setCanvasEventDescription(txtEventDetails.getText(), this.selectedRow);
+       loadEventsToJTable(clientControler.getCanvasEvent());
        txtEventDetails.setText("");
        pnlEditEvent.setVisible(false);
        btnEditEvent.setVisible(true);
