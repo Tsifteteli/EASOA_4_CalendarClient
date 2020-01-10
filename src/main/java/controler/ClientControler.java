@@ -67,6 +67,10 @@ public class ClientControler {
         return this.canvasEvent;
     }
 
+    public void setCanvasEventDescription(String description, int i) {
+        this.canvasEvent[i].setDescription(description);
+    }
+
     private void getTimeEditCalendar() {
         try {
             //Använd klassen URL för att peka ut en resurs på WWW
@@ -144,7 +148,7 @@ public class ClientControler {
             this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[7]);
         }
     }
-    
+
     public void setContextCode(String contextCode) {
        
          for (int i = 0; i < this.canvasEvent.length; i++) {
@@ -177,11 +181,11 @@ public class ClientControler {
         Client client = ClientBuilder.newBuilder().register(feature).build();
 
         WebTarget target = client.target(ClientControler.CANVAS_URI);
-        
+
         //Skapa en anropsbyggare genom att använda target som håller URI...
         //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
-        
+
 //        //Testsnurra med testArray
 //        for (int i = 0; i < canvasEventsArray.length; i++) {
 //            
@@ -194,33 +198,30 @@ public class ClientControler {
 //           form.param("calendar_event[end_at]", canvasEventsArray[i].getEndAt());
 //           form.param("calendar_event[location_name]", canvasEventsArray[i].getLocationName());
 //           form.param("calendar_event[location_address]", canvasEventsArray[i].getLocationAddress());
-        
         for (int i = 0; i < this.canvasEvent.length; i++) {
-            
-           //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
-           Form form = new Form();
-           form.param("calendar_event[context_code]", this.canvasEvent[i].getContextCode());
-           form.param("calendar_event[title]", this.canvasEvent[i].getTitle());
-           form.param("calendar_event[description]", this.canvasEvent[i].getDescription());
-           form.param("calendar_event[start_at]", this.canvasEvent[i].getStartAt());
-           form.param("calendar_event[end_at]", this.canvasEvent[i].getEndAt());
-           form.param("calendar_event[location_name]", this.canvasEvent[i].getLocationName());
-           form.param("calendar_event[location_address]", this.canvasEvent[i].getLocationAddress());
 
-           //Kör anropet med angivn metod, i detta fallet POST, 
-           //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
-           //Kan även vara .put(), .get() eller .delete()
-           Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-           
-           //Visa pop-up som bekräftelse på om det funkat eller ej... (lista vilka som postats och vilka som misslyckats?)
-           if (r.getStatus() != 201) {
-               System.out.println("Någor sket sig... " + r.getStatus());
-   //         JOptionPane.showMessageDialog(this, "ERROR: " + r.getStatus() + " Someting went wrong!");
-           } else {
-               System.out.println("Det funkade! ");
-   //         //Visa sökvägen till den nyligt skpade posten
-   //         JOptionPane.showMessageDialog(this, "New post was aded o calendar: " + r.getLocation());
-           }
+            //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
+            Form form = new Form();
+            form.param("calendar_event[context_code]", this.canvasEvent[i].getContextCode());
+            form.param("calendar_event[title]", this.canvasEvent[i].getTitle());
+            form.param("calendar_event[description]", this.canvasEvent[i].getDescription());
+            form.param("calendar_event[start_at]", this.canvasEvent[i].getStartAt());
+            form.param("calendar_event[end_at]", this.canvasEvent[i].getEndAt());
+            form.param("calendar_event[location_name]", this.canvasEvent[i].getLocationName());
+            form.param("calendar_event[location_address]", this.canvasEvent[i].getLocationAddress());
+
+            //Kör anropet med angivn metod, i detta fallet POST, 
+            //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
+            //Kan även vara .put(), .get() eller .delete()
+            Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+            if (r.getStatus() != 201) {
+                System.out.println("Någor sket sig... " + r.getStatus());
+                //         JOptionPane.showMessageDialog(this, "ERROR: " + r.getStatus() + " Someting went wrong!");
+            } else {
+                System.out.println("Det funkade! ");
+                //         //Visa sökvägen till den nyligt skpade posten
+                //         JOptionPane.showMessageDialog(this, "New post was aded o calendar: " + r.getLocation());
+            }
         }
     }
 
@@ -234,10 +235,10 @@ public class ClientControler {
 //        run.setCanvasCalendar(testArray); //För test
 //        run.ConvertTimeEditEventToCanvasEvent();
     }
-    
+
     private static CanvasEvent[] testArray() {
-       CanvasEvent[] testArray = new CanvasEvent[3];
-       for (int i = 0; i < testArray.length; i++) {
+        CanvasEvent[] testArray = new CanvasEvent[3];
+        for (int i = 0; i < testArray.length; i++) {
             testArray[i] = new CanvasEvent();
             testArray[i].setContextCode("user_65238");
             testArray[i].setLocationName("Biblioteket");
@@ -247,9 +248,9 @@ public class ClientControler {
             testArray[i].setEndAt("2020-01-10T19:00:00Z");
             testArray[i].setDescription("Detta är et test!");
         }
-       return testArray;
+        return testArray;
     }
-    
+
 //    //Testobjekt
 //        CanvasEvent canvasEvent = new CanvasEvent();
 //        canvasEvent.setContextCode("user_65238");
@@ -259,5 +260,4 @@ public class ClientControler {
 //        canvasEvent.setEndAt("2020-01-10T19:00:00Z");
 //        canvasEvent.setLocationName("Biblioteket");
 //        canvasEvent.setLocationAddress("Storgatan 5");
-
 }

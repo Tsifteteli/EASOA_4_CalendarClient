@@ -23,6 +23,9 @@ public class ClientGUI extends javax.swing.JFrame {
     private String details;
     
     private ClientControler clientControler = new ClientControler(this);
+    private int selectedRow;
+
+    private ClientControler clientControler = new ClientControler();
 
     /**
      * Creates new form ClientGUI
@@ -263,6 +266,7 @@ public class ClientGUI extends javax.swing.JFrame {
        btnLoadToCanvas.setVisible(false);
        btnGetSchedule.setVisible(false);
        //Hårdkodat med vilken kolumn, men det ska vara detljer som ska redigeras
+       this.selectedRow = tblCalendarEvents.getSelectedRow();
        txtEventDetails.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3).toString());
    }//GEN-LAST:event_btnEditEventActionPerformed
 
@@ -283,6 +287,8 @@ public class ClientGUI extends javax.swing.JFrame {
        //Lägg till kod som sparar in de nya detailsen till motsvarande
        //canvasEvent-objekt i canvasEvent-arrayen och visar infon i tabellen
 
+       clientControler.setCanvasEventDescription(txtEventDetails.getText(), this.selectedRow);
+       loadEventsToJTable(clientControler.getCanvasEvent());
        txtEventDetails.setText("");
        pnlEditEvent.setVisible(false);
        btnEditEvent.setVisible(true);
