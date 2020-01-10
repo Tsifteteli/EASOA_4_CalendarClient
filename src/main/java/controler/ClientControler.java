@@ -159,16 +159,33 @@ public class ClientControler {
 
     }
     
-    private void fixTimeOneHour(Sring startTime, String endTime) {
+    private void fixTimeOneHour() {
        
          for (int i = 0; i < this.canvasEvent.length; i++) {
-         
-            String startTime = this.canvasEvent[i].getStartAt();
+            //2020-01-10T17:00:00Z
             //Få ut timmarna
+            String startTime = this.canvasEvent[i].getStartAt();
+            String startHour = startTime.substring(12,14);
+            
             //Konverera till int
+            int intStartHour = Integer.parseInt(startHour);
+            
             //ta minus 1h (if klockslaget är 00, sätt till 23)
+            if (intStartHour == 0) {
+               intStartHour = 23;
+            } else {
+               intStartHour--;
+            }
             //Konvertera tillbaka till Sring
+            startHour = Integer.toString(intStartHour);
+            
             //Kopiera in den nya timmen på rätt plats
+            //Om Stringen bara är 1 car lång - lägg en nolla på index 12
+            //Om Stringen är 2 car lång - lägg in som nedan
+            char[] startTimeCharArray = startTime.toCharArray();
+            startTimeCharArray[12] = 'x'; //Byt ut x mot get car från startHour
+            startTimeCharArray[13] = 'x';
+            startTime = String.valueOf(startTimeCharArray);
          }
     }
 
