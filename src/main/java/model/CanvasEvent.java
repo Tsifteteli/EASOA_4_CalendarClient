@@ -5,8 +5,6 @@
  */
 package model;
 
-import java.time.LocalDateTime;
-
 /**
  *
  * @author Caroline
@@ -45,21 +43,21 @@ public class CanvasEvent {
         return description;
     }
 
-   public String getStartAt() {
-      return start_at;
-   }
+    public String getStartAt() {
+        return start_at;
+    }
 
-   public void setStartAt(String start_at) {
-      this.start_at = start_at;
-   }
+    public void setStartAt(String start_at) {
+        this.start_at = start_at;
+    }
 
-   public String getEndAt() {
-      return end_at;
-   }
+    public String getEndAt() {
+        return end_at;
+    }
 
-   public void setEndAt(String end_at) {
-      this.end_at = end_at;
-   }
+    public void setEndAt(String end_at) {
+        this.end_at = end_at;
+    }
 
     public void setLocationName(String location_name) {
         this.location_name = location_name;
