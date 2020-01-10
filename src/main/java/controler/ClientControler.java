@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -29,6 +30,7 @@ import model.ReservationInfo;
 import model.TimeEditCalendar;
 import model.TimeEditEvent;
 import org.glassfish.jersey.client.oauth2.OAuth2ClientSupport;
+import view.ClientGUI;
 
 /**
  *
@@ -36,11 +38,18 @@ import org.glassfish.jersey.client.oauth2.OAuth2ClientSupport;
  */
 public class ClientControler {
 
-    //Grundsökvägen till webservicarna vi vill anropa
+   private ClientGUI clientGui;
+
+   //Grundsökvägen till webservicarna vi vill anropa
     private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
     private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
     private CanvasEvent[] canvasEvent;
+    
+    
+    public ClientControler(ClientGUI clientGui) {
+       this.clientGui = clientGui;
+    }
 
     //P.g.a. hårdkodning av sökning på kurskod kan egentligen en modifikation till getCanvasCalendar
     //input värde ge ne sträng som designerar vilken kurs som ska hämtas
@@ -142,11 +151,12 @@ public class ClientControler {
     }
 
     public void setContextCode(String contextCode) {
-
-        for (int i = 0; i < this.canvasEvent.length; i++) {
-
-            this.canvasEvent[i].setContextCode(contextCode);
-        }
+       
+         for (int i = 0; i < this.canvasEvent.length; i++) {
+            //I skarp version ska det vara setContextCode("course_" + contextCode);
+            //+ fixa kontroll på vad användaren matar in
+            this.canvasEvent[i].setContextCode("user_" + contextCode);
+         }
 
     }
 
@@ -206,8 +216,8 @@ public class ClientControler {
             //Kan även vara .put(), .get() eller .delete()
             Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
             if (r.getStatus() != 201) {
-                System.out.println("Någor sket sig... " + r.getStatus());
-                //         JOptionPane.showMessageDialog(this, "ERROR: " + r.getStatus() + " Someting went wrong!");
+//                System.out.println("Någor sket sig... " + r.getStatus());
+                         JOptionPane.showMessageDialog(this.clientGui, "Someting went wrong: " + r.getStatus(), "Unable to post calendar event", JOptionPane.ERROR_MESSAGE);
             } else {
                 System.out.println("Det funkade! ");
                 //         //Visa sökvägen till den nyligt skpade posten
@@ -221,7 +231,7 @@ public class ClientControler {
     }
 
     public static void main(String[] args) {
-        ClientControler run = new ClientControler();
+//        ClientControler run = new ClientControler();
 //        run.getTimeEditCalendar();
 //        run.setCanvasCalendar(testArray); //För test
 //        run.ConvertTimeEditEventToCanvasEvent();
