@@ -139,7 +139,7 @@ public class ClientControler {
     }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
-    public void setCanvasCalendar(CanvasEvent[] canvasEventsArray) {
+    public void setCanvasCalendar() { //Lägg in CanvasEvent[] canvasEventsArray vid test
 
         //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
         //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
@@ -165,30 +165,30 @@ public class ClientControler {
         //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
         
-        //Testsnurra med testArray
-        for (int i = 0; i < canvasEventsArray.length; i++) {
-            
-           //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
-           Form form = new Form();
-           form.param("calendar_event[context_code]", canvasEventsArray[i].getContextCode());
-           form.param("calendar_event[title]", canvasEventsArray[i].getTitle());
-           form.param("calendar_event[description]", canvasEventsArray[i].getDescription());
-           form.param("calendar_event[start_at]", canvasEventsArray[i].getStartAt());
-           form.param("calendar_event[end_at]", canvasEventsArray[i].getEndAt());
-           form.param("calendar_event[location_name]", canvasEventsArray[i].getLocationName());
-           form.param("calendar_event[location_address]", canvasEventsArray[i].getLocationAddress());
-        
-//        for (int i = 0; i < this.canvasEvent.length; i++) {
+//        //Testsnurra med testArray
+//        for (int i = 0; i < canvasEventsArray.length; i++) {
 //            
 //           //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
 //           Form form = new Form();
-//           form.param("calendar_event[context_code]", this.canvasEvent[i].getContextCode());
-//           form.param("calendar_event[title]", this.canvasEvent[i].getTitle());
-//           form.param("calendar_event[description]", this.canvasEvent[i].getDescription());
-//           form.param("calendar_event[start_at]", this.canvasEvent[i].getStartAt());
-//           form.param("calendar_event[end_at]", this.canvasEvent[i].getEndAt());
-//           form.param("calendar_event[location_name]", this.canvasEvent[i].getLocationName());
-//           form.param("calendar_event[location_address]", this.canvasEvent[i].getLocationAddress());
+//           form.param("calendar_event[context_code]", canvasEventsArray[i].getContextCode());
+//           form.param("calendar_event[title]", canvasEventsArray[i].getTitle());
+//           form.param("calendar_event[description]", canvasEventsArray[i].getDescription());
+//           form.param("calendar_event[start_at]", canvasEventsArray[i].getStartAt());
+//           form.param("calendar_event[end_at]", canvasEventsArray[i].getEndAt());
+//           form.param("calendar_event[location_name]", canvasEventsArray[i].getLocationName());
+//           form.param("calendar_event[location_address]", canvasEventsArray[i].getLocationAddress());
+        
+        for (int i = 0; i < this.canvasEvent.length; i++) {
+            
+           //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
+           Form form = new Form();
+           form.param("calendar_event[context_code]", this.canvasEvent[i].getContextCode());
+           form.param("calendar_event[title]", this.canvasEvent[i].getTitle());
+           form.param("calendar_event[description]", this.canvasEvent[i].getDescription());
+           form.param("calendar_event[start_at]", this.canvasEvent[i].getStartAt());
+           form.param("calendar_event[end_at]", this.canvasEvent[i].getEndAt());
+           form.param("calendar_event[location_name]", this.canvasEvent[i].getLocationName());
+           form.param("calendar_event[location_address]", this.canvasEvent[i].getLocationAddress());
 
            //Kör anropet med angivn metod, i detta fallet POST, 
            //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
@@ -212,7 +212,7 @@ public class ClientControler {
     public static void main(String[] args) {
         ClientControler run = new ClientControler();
 //        run.getTimeEditCalendar();
-        run.setCanvasCalendar(testArray());
+//        run.setCanvasCalendar(testArray); //För test
 //        run.ConvertTimeEditEventToCanvasEvent();
     }
     
