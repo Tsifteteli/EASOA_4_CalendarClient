@@ -118,7 +118,15 @@ public class ClientControler {
             this.canvasEvent[i].setEndAt(timeEditCalendar.getReservations()[i].getEnddate() + "T" + timeEditCalendar.getReservations()[i].getEndtime() + "Z");
             this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[6]);
         }
+    }
 
+    //P.g.a. hårdkodning av sökning på kurskod kan egentligen en modifikation till getCanvasCalendar
+    //input värde ge ne sträng som designerar vilken kurs som ska hämtas
+    //Där finns också ett timeEditEvent objekt som innehåller alla headers också
+    //som man kan återanvända till GUI:n för att visa headers där.
+    public CanvasEvent[] getCanvasCalendar() {
+        getTimeEditCalendar();
+        return this.canvasEvent;
     }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
