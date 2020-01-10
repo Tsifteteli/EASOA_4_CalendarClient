@@ -21,6 +21,8 @@ public class ClientGUI extends javax.swing.JFrame {
     private Object[][] data;
     private DefaultTableModel tblModel;
     private String details;
+    
+    private ClientControler clientControler = new ClientControler();
 
     /**
      * Creates new form ClientGUI
@@ -249,8 +251,7 @@ public class ClientGUI extends javax.swing.JFrame {
        //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
        //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
        //och skriver ut namne på kursen från datan i TimeEditEvents column-array.
-       ClientControler clientControler = new ClientControler();
-       CanvasEvent[] canvasEvent = clientControler.getCanvasCalendar();
+       CanvasEvent[] canvasEvent = this.clientControler.getCanvasCalendar();
        loadEventsToJTable(canvasEvent);
    }//GEN-LAST:event_btnGetScheduleActionPerformed
 
