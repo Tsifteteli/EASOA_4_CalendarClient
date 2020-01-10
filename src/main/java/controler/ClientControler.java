@@ -40,7 +40,7 @@ public class ClientControler {
     private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
     private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
-    private TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
+    private CanvasEvent[] canvasEvent;
 
     private void getTimeEditCalendar() {
         try {
@@ -67,9 +67,8 @@ public class ClientControler {
             while (line != null) {
                 //Testa först med en System.out.println så jag ser att jag får ut data och vilken sorts data det är, 
                 //så jag kan skapa en egen klass som matchar och kan hålla datat.
-//            System.out.println(line);
                 //Ladda in datan i min tabell
-                loadJTableFromJson(line);
+                loadJTableFromTimeEdit(line);
                 line = br.readLine();
             }
 
@@ -85,44 +84,39 @@ public class ClientControler {
         }
     }
 
-    private void loadJTableFromJson(String jsonInput) {
+    private void loadJTableFromTimeEdit(String jsonInput) {
         //Konvertera JSON-Array till en Array med Java-objekt (Av en klass som jag skapat som matchar)
         //Finns flera olika 3e-parts-bibliotek som kan användas för detta på https://www.json.org/json-en.html
         //I detta fallet används google-gson
-
+        TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
         JsonObject jsonObject = new Gson().fromJson(jsonInput, JsonObject.class);
 
         String[] columnheaders = new Gson().fromJson(jsonObject.get("columnheaders"), String[].class);
         ReservationInfo info = new Gson().fromJson(jsonObject.get("info"), ReservationInfo.class);
         TimeEditEvent[] timeEditEvent = new Gson().fromJson(jsonObject.get("reservations"), TimeEditEvent[].class);
 
-        this.timeEditCalendar.setInfo(info);
-        this.timeEditCalendar.setReservations(timeEditEvent);
-        this.timeEditCalendar.setColumnheaders(columnheaders);
+        timeEditCalendar.setInfo(info);
+        timeEditCalendar.setReservations(timeEditEvent);
+        timeEditCalendar.setColumnheaders(columnheaders);
+
+        ConvertTimeEditEventToCanvasEvent(timeEditCalendar);
 
     }
 
-    private void ConvertTimeEditEventToCanvasEvent() {
+    private void ConvertTimeEditEventToCanvasEvent(TimeEditCalendar timeEditCalendar) {
 
-        CanvasEvent[] canvasEvent = new CanvasEvent[this.timeEditCalendar.getInfo().getReservationcount()];
-
-        for (int i = 0; i < canvasEvent.length; i++) {
-            canvasEvent[i] = new CanvasEvent();
-        }
+        this.canvasEvent = new CanvasEvent[timeEditCalendar.getInfo().getReservationcount()];
 
         //Statisk variabel för varje del, kan ändras till något mer dynamiskt som känner av vilken typ
         //som finns i coulmnheader för att sedan föra över rätt typ till canvas
-        for (int i = 0; i < this.timeEditCalendar.getReservations().length; i++) {
-            canvasEvent[i].setLocationName(this.timeEditCalendar.getReservations()[i].getColumns()[1]);
-            canvasEvent[i].setTitle(this.timeEditCalendar.getReservations()[i].getColumns()[3] + " " + this.timeEditCalendar.getReservations()[i].getColumns()[2]);
-            canvasEvent[i].setLocationAddress(this.timeEditCalendar.getReservations()[i].getColumns()[5]);
-            canvasEvent[i].setStartAt(this.timeEditCalendar.getReservations()[i].getStartdate() + "T" + this.timeEditCalendar.getReservations()[i].getStarttime() + "Z");
-            canvasEvent[i].setEndAt(this.timeEditCalendar.getReservations()[i].getEnddate() + "T" + this.timeEditCalendar.getReservations()[i].getEndtime() + "Z");
-            canvasEvent[i].setDescription(this.timeEditCalendar.getReservations()[i].getColumns()[6]);
-        }
-
-        for (int i = 0; i < canvasEvent.length; i++) {
-            System.out.printf("%s\n%s\n%s\n%s\n%s\n%s\n", canvasEvent[i].getDescription(), canvasEvent[i].getLocationAddress(), canvasEvent[i].getLocationName(), canvasEvent[i].getTitle(), canvasEvent[i].getStartAt(), canvasEvent[i].getEndAt());
+        for (int i = 0; i < this.canvasEvent.length; i++) {
+            this.canvasEvent[i] = new CanvasEvent();
+            this.canvasEvent[i].setLocationName(timeEditCalendar.getReservations()[i].getColumns()[1]);
+            this.canvasEvent[i].setTitle(timeEditCalendar.getReservations()[i].getColumns()[3] + " " + timeEditCalendar.getReservations()[i].getColumns()[2]);
+            this.canvasEvent[i].setLocationAddress(timeEditCalendar.getReservations()[i].getColumns()[5]);
+            this.canvasEvent[i].setStartAt(timeEditCalendar.getReservations()[i].getStartdate() + "T" + timeEditCalendar.getReservations()[i].getStarttime() + "Z");
+            this.canvasEvent[i].setEndAt(timeEditCalendar.getReservations()[i].getEnddate() + "T" + timeEditCalendar.getReservations()[i].getEndtime() + "Z");
+            this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[6]);
         }
 
     }
