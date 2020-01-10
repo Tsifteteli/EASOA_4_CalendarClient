@@ -113,12 +113,20 @@ public class ClientControler {
             this.canvasEvent[i] = new CanvasEvent();
             this.canvasEvent[i].setLocationName(timeEditCalendar.getReservations()[i].getColumns()[1]);
             this.canvasEvent[i].setTitle(timeEditCalendar.getReservations()[i].getColumns()[3] + " " + timeEditCalendar.getReservations()[i].getColumns()[2]);
-            this.canvasEvent[i].setLocationAddress(timeEditCalendar.getReservations()[i].getColumns()[5]);
+            this.canvasEvent[i].setLocationAddress(timeEditCalendar.getReservations()[i].getColumns()[6]);
             this.canvasEvent[i].setStartAt(timeEditCalendar.getReservations()[i].getStartdate() + "T" + timeEditCalendar.getReservations()[i].getStarttime() + "Z");
             this.canvasEvent[i].setEndAt(timeEditCalendar.getReservations()[i].getEnddate() + "T" + timeEditCalendar.getReservations()[i].getEndtime() + "Z");
-            this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[6]);
+            this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[7]);
         }
+    }
 
+    //P.g.a. hårdkodning av sökning på kurskod kan egentligen en modifikation till getCanvasCalendar
+    //input värde ge ne sträng som designerar vilken kurs som ska hämtas
+    //Där finns också ett timeEditEvent objekt som innehåller alla headers också
+    //som man kan återanvända till GUI:n för att visa headers där.
+    public CanvasEvent[] getCanvasCalendar() {
+        getTimeEditCalendar();
+        return this.canvasEvent;
     }
     
     public void setContextCode(String contextCode) {
@@ -195,6 +203,10 @@ public class ClientControler {
    //         JOptionPane.showMessageDialog(this, "New post was aded o calendar: " + r.getLocation());
            }
         }
+    }
+
+    public void editCanvasEvent() {
+
     }
 
     public static void main(String[] args) {
