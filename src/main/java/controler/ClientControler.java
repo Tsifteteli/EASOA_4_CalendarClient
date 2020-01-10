@@ -105,15 +105,18 @@ public class ClientControler {
 
     private void ConvertTimeEditEventToCanvasEvent(TimeEditCalendar timeEditCalendar) {
 
+        this.canvasEvent = new CanvasEvent[timeEditCalendar.getInfo().getReservationcount()];
+
         //Statisk variabel för varje del, kan ändras till något mer dynamiskt som känner av vilken typ
         //som finns i coulmnheader för att sedan föra över rätt typ till canvas
-        for (int i = 0; i < timeEditCalendar.getReservations().length; i++) {
-            canvasEvent[i].setLocationName(timeEditCalendar.getReservations()[i].getColumns()[1]);
-            canvasEvent[i].setTitle(timeEditCalendar.getReservations()[i].getColumns()[3] + " " + timeEditCalendar.getReservations()[i].getColumns()[2]);
-            canvasEvent[i].setLocationAddress(timeEditCalendar.getReservations()[i].getColumns()[5]);
-            canvasEvent[i].setStartAt(timeEditCalendar.getReservations()[i].getStartdate() + "T" + timeEditCalendar.getReservations()[i].getStarttime() + "Z");
-            canvasEvent[i].setEndAt(timeEditCalendar.getReservations()[i].getEnddate() + "T" + timeEditCalendar.getReservations()[i].getEndtime() + "Z");
-            canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[6]);
+        for (int i = 0; i < this.canvasEvent.length; i++) {
+            this.canvasEvent[i] = new CanvasEvent();
+            this.canvasEvent[i].setLocationName(timeEditCalendar.getReservations()[i].getColumns()[1]);
+            this.canvasEvent[i].setTitle(timeEditCalendar.getReservations()[i].getColumns()[3] + " " + timeEditCalendar.getReservations()[i].getColumns()[2]);
+            this.canvasEvent[i].setLocationAddress(timeEditCalendar.getReservations()[i].getColumns()[5]);
+            this.canvasEvent[i].setStartAt(timeEditCalendar.getReservations()[i].getStartdate() + "T" + timeEditCalendar.getReservations()[i].getStarttime() + "Z");
+            this.canvasEvent[i].setEndAt(timeEditCalendar.getReservations()[i].getEnddate() + "T" + timeEditCalendar.getReservations()[i].getEndtime() + "Z");
+            this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[6]);
         }
 
     }
