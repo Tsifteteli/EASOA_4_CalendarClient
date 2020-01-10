@@ -120,20 +120,18 @@ public class ClientControler {
         }
 
     }
+    
+    public void setContextCode(String contextCode) {
+       
+         for (int i = 0; i < this.canvasEvent.length; i++) {
+            
+            this.canvasEvent[i].setContextCode(contextCode);
+         }
+
+    }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
-    public void setCanvasCalendar() { //Lägg in CanvasEvent[] canvasEventsArray som inparameter sen
-        //Ta canvasEvent-arrayen och posta respektive objekt i den som ett kalenderobjekt
-        //(Börja med att försöka posa ett objekt, sen hel array)
-        //Testobjekt
-        CanvasEvent canvasEvent = new CanvasEvent();
-        canvasEvent.setContextCode("user_65238");
-        canvasEvent.setTitle("Test från NB 3");
-        canvasEvent.setDescription("Detta är et test!");
-        canvasEvent.setStartAt("2020-01-10T17:00:00Z");
-        canvasEvent.setEndAt("2020-01-10T19:00:00Z");
-        canvasEvent.setLocationName("Biblioteket");
-        canvasEvent.setLocationAddress("Storgatan 5");
+    public void setCanvasCalendar(CanvasEvent[] canvasEventsArray) {
 
         //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
         //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
@@ -154,39 +152,81 @@ public class ClientControler {
         Client client = ClientBuilder.newBuilder().register(feature).build();
 
         WebTarget target = client.target(ClientControler.CANVAS_URI);
-
-        //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
-        Form form = new Form();
-        form.param("calendar_event[context_code]", canvasEvent.getContextCode());
-        form.param("calendar_event[title]", canvasEvent.getTitle());
-        form.param("calendar_event[description]", canvasEvent.getDescription());
-        form.param("calendar_event[start_at]", canvasEvent.getStartAt());
-        form.param("calendar_event[end_at]", canvasEvent.getEndAt());
-        form.param("calendar_event[location_name]", canvasEvent.getLocationName());
-        form.param("calendar_event[location_address]", canvasEvent.getLocationAddress());
-
+        
         //Skapa en anropsbyggare genom att använda target som håller URI...
         //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
-        //Kör anropet med angivn metod, i detta fallet POST, 
-        //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
-        //Kan även vara .put(), .get() eller .delete()
-        Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-        if (r.getStatus() != 201) {
-            System.out.println("Någor sket sig... " + r.getStatus());
-//         JOptionPane.showMessageDialog(this, "ERROR: " + r.getStatus() + " Someting went wrong!");
-        } else {
-            System.out.println("Det funkade! ");
-//         //Visa sökvägen till den nyligt skpade posten
-//         JOptionPane.showMessageDialog(this, "New post was aded o calendar: " + r.getLocation());
+        
+        //Testsnurra med testArray
+        for (int i = 0; i < canvasEventsArray.length; i++) {
+            
+           //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
+           Form form = new Form();
+           form.param("calendar_event[context_code]", canvasEventsArray[i].getContextCode());
+           form.param("calendar_event[title]", canvasEventsArray[i].getTitle());
+           form.param("calendar_event[description]", canvasEventsArray[i].getDescription());
+           form.param("calendar_event[start_at]", canvasEventsArray[i].getStartAt());
+           form.param("calendar_event[end_at]", canvasEventsArray[i].getEndAt());
+           form.param("calendar_event[location_name]", canvasEventsArray[i].getLocationName());
+           form.param("calendar_event[location_address]", canvasEventsArray[i].getLocationAddress());
+        
+//        for (int i = 0; i < this.canvasEvent.length; i++) {
+//            
+//           //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
+//           Form form = new Form();
+//           form.param("calendar_event[context_code]", this.canvasEvent[i].getContextCode());
+//           form.param("calendar_event[title]", this.canvasEvent[i].getTitle());
+//           form.param("calendar_event[description]", this.canvasEvent[i].getDescription());
+//           form.param("calendar_event[start_at]", this.canvasEvent[i].getStartAt());
+//           form.param("calendar_event[end_at]", this.canvasEvent[i].getEndAt());
+//           form.param("calendar_event[location_name]", this.canvasEvent[i].getLocationName());
+//           form.param("calendar_event[location_address]", this.canvasEvent[i].getLocationAddress());
+
+           //Kör anropet med angivn metod, i detta fallet POST, 
+           //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
+           //Kan även vara .put(), .get() eller .delete()
+           Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+           if (r.getStatus() != 201) {
+               System.out.println("Någor sket sig... " + r.getStatus());
+   //         JOptionPane.showMessageDialog(this, "ERROR: " + r.getStatus() + " Someting went wrong!");
+           } else {
+               System.out.println("Det funkade! ");
+   //         //Visa sökvägen till den nyligt skpade posten
+   //         JOptionPane.showMessageDialog(this, "New post was aded o calendar: " + r.getLocation());
+           }
         }
     }
 
     public static void main(String[] args) {
         ClientControler run = new ClientControler();
 //        run.getTimeEditCalendar();
-        run.setCanvasCalendar();
+        run.setCanvasCalendar(testArray());
 //        run.ConvertTimeEditEventToCanvasEvent();
     }
+    
+    private static CanvasEvent[] testArray() {
+       CanvasEvent[] testArray = new CanvasEvent[3];
+       for (int i = 0; i < testArray.length; i++) {
+            testArray[i] = new CanvasEvent();
+            testArray[i].setContextCode("user_65238");
+            testArray[i].setLocationName("Biblioteket");
+            testArray[i].setTitle("Test från NB 4");
+            testArray[i].setLocationAddress("Storgatan 5");
+            testArray[i].setStartAt("2020-01-10T16:00:00Z");
+            testArray[i].setEndAt("2020-01-10T19:00:00Z");
+            testArray[i].setDescription("Detta är et test!");
+        }
+       return testArray;
+    }
+    
+//    //Testobjekt
+//        CanvasEvent canvasEvent = new CanvasEvent();
+//        canvasEvent.setContextCode("user_65238");
+//        canvasEvent.setTitle("Test från NB 3");
+//        canvasEvent.setDescription("Detta är et test!");
+//        canvasEvent.setStartAt("2020-01-10T17:00:00Z");
+//        canvasEvent.setEndAt("2020-01-10T19:00:00Z");
+//        canvasEvent.setLocationName("Biblioteket");
+//        canvasEvent.setLocationAddress("Storgatan 5");
 
 }
