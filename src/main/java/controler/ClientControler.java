@@ -113,10 +113,10 @@ public class ClientControler {
             this.canvasEvent[i] = new CanvasEvent();
             this.canvasEvent[i].setLocationName(timeEditCalendar.getReservations()[i].getColumns()[1]);
             this.canvasEvent[i].setTitle(timeEditCalendar.getReservations()[i].getColumns()[3] + " " + timeEditCalendar.getReservations()[i].getColumns()[2]);
-            this.canvasEvent[i].setLocationAddress(timeEditCalendar.getReservations()[i].getColumns()[5]);
+            this.canvasEvent[i].setLocationAddress(timeEditCalendar.getReservations()[i].getColumns()[6]);
             this.canvasEvent[i].setStartAt(timeEditCalendar.getReservations()[i].getStartdate() + "T" + timeEditCalendar.getReservations()[i].getStarttime() + "Z");
             this.canvasEvent[i].setEndAt(timeEditCalendar.getReservations()[i].getEnddate() + "T" + timeEditCalendar.getReservations()[i].getEndtime() + "Z");
-            this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[6]);
+            this.canvasEvent[i].setDescription(timeEditCalendar.getReservations()[i].getColumns()[7]);
         }
     }
 
@@ -188,6 +188,10 @@ public class ClientControler {
 //         //Visa sökvägen till den nyligt skpade posten
 //         JOptionPane.showMessageDialog(this, "New post was aded o calendar: " + r.getLocation());
         }
+    }
+
+    public void editCanvasEvent() {
+
     }
 
     public static void main(String[] args) {

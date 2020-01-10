@@ -245,12 +245,10 @@ public class ClientGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
    private void btnGetScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetScheduleActionPerformed
-       // TODO add your handling code here:
        //Kör metoden som hämtar JSON-data från TimeEdit
        //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
        //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
        //och skriver ut namne på kursen från datan i TimeEditEvents column-array.
-
        ClientControler clientControler = new ClientControler();
        CanvasEvent[] canvasEvent = clientControler.getCanvasCalendar();
        loadEventsToJTable(canvasEvent);
@@ -259,10 +257,14 @@ public class ClientGUI extends javax.swing.JFrame {
    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
        // TODO add your handling code here:
        //Visa JPanel där man kan redigera "Details" för ett event
-       pnlEditEvent.setVisible(true);
-       btnEditEvent.setVisible(false);
-       btnLoadToCanvas.setVisible(false);
-       btnGetSchedule.setVisible(false);
+       if (tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3) != null) {
+           pnlEditEvent.setVisible(true);
+           btnEditEvent.setVisible(false);
+           btnLoadToCanvas.setVisible(false);
+           btnGetSchedule.setVisible(false);
+           //Hårdkodat med vilken kolumn, men det ska vara detljer som ska redigeras
+           txtEventDetails.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3).toString());
+       }
    }//GEN-LAST:event_btnEditEventActionPerformed
 
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
