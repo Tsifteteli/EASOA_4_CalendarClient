@@ -150,7 +150,7 @@ public class ClientControler {
         }
     }
 
-    public void setContextCode(String contextCode) {
+    private void setContextCode(String contextCode) {
        
          for (int i = 0; i < this.canvasEvent.length; i++) {
             //I skarp version ska det vara setContextCode("course_" + contextCode);
@@ -161,7 +161,7 @@ public class ClientControler {
     }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
-    public void setCanvasCalendar() { //Lägg in CanvasEvent[] canvasEventsArray vid test
+    public void setCanvasCalendar(String contextCode) { //Lägg in CanvasEvent[] canvasEventsArray vid test
 
         //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
         //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
@@ -177,6 +177,9 @@ public class ClientControler {
 //            .request()
 //            .get();
 //      }
+
+        this.setContextCode(contextCode);
+        
         Feature feature = OAuth2ClientSupport.feature(TOKEN);
 
         Client client = ClientBuilder.newBuilder().register(feature).build();

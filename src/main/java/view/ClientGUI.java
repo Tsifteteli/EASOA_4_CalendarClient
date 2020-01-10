@@ -276,8 +276,7 @@ public class ClientGUI extends javax.swing.JFrame {
         "Enter the canvas ID number of the course to continue", 
         "Canvas ID number", 
         JOptionPane.QUESTION_MESSAGE);
-       this.clientControler.setContextCode(contextCode);
-       this.clientControler.setCanvasCalendar();
+       this.clientControler.setCanvasCalendar(contextCode);
    }//GEN-LAST:event_btnLoadToCanvasActionPerformed
 
    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
