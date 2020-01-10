@@ -159,6 +159,19 @@ public class ClientControler {
          }
 
     }
+    
+    private void fixTimeOneHour(Sring startTime, String endTime) {
+       
+         for (int i = 0; i < this.canvasEvent.length; i++) {
+         
+            String startTime = this.canvasEvent[i].getStartAt();
+            //Få ut timmarna
+            //Konverera till int
+            //ta minus 1h (if klockslaget är 00, sätt till 23)
+            //Konvertera tillbaka till Sring
+            //Kopiera in den nya timmen på rätt plats
+         }
+    }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
     public void setCanvasCalendar(String contextCode) { //Lägg in CanvasEvent[] canvasEventsArray vid test
