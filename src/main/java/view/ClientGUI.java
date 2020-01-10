@@ -22,7 +22,7 @@ public class ClientGUI extends javax.swing.JFrame {
     private DefaultTableModel tblModel;
     private String details;
     
-    private ClientControler clientControler = new ClientControler();
+    private ClientControler clientControler = new ClientControler(this);
 
     /**
      * Creates new form ClientGUI
@@ -251,7 +251,7 @@ public class ClientGUI extends javax.swing.JFrame {
        //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
        //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
        //och skriver ut namne på kursen från datan i TimeEditEvents column-array.
-       CanvasEvent[] canvasEvent = this.clientControler.getCanvasCalendar();
+       CanvasEvent[] canvasEvent = this.clientControler.getTimeEditEvent();
        loadEventsToJTable(canvasEvent);
    }//GEN-LAST:event_btnGetScheduleActionPerformed
 
@@ -268,15 +268,13 @@ public class ClientGUI extends javax.swing.JFrame {
 
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
        // TODO add your handling code here:
-       //POSTa canvasEvent-objekten till Canvas
-       String contextCode = JOptionPane.showInputDialog( this, 
+       //POSTa canvasEvent-objekt till Canvas
+       String contextCode = JOptionPane.showInputDialog(this, 
         "Enter the canvas ID number of the course to continue", 
         "Canvas ID number", 
         JOptionPane.QUESTION_MESSAGE);
        this.clientControler.setContextCode(contextCode);
        this.clientControler.setCanvasCalendar();
-
-       //Visa pop-up som bekräftelse på om det funkat eller ej... (lista vilka som postats och vilka som misslyckats?)
    }//GEN-LAST:event_btnLoadToCanvasActionPerformed
 
    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
