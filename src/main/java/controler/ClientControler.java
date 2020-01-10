@@ -148,8 +148,9 @@ public class ClientControler {
     public void setContextCode(String contextCode) {
        
          for (int i = 0; i < this.canvasEvent.length; i++) {
-            
-            this.canvasEvent[i].setContextCode(contextCode);
+            //I skarp version ska det vara setContextCode("course_" + contextCode);
+            //+ fixa kontroll på vad användaren matar in
+            this.canvasEvent[i].setContextCode("user_" + contextCode);
          }
 
     }
