@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -215,8 +216,8 @@ public class ClientControler {
             //Kan även vara .put(), .get() eller .delete()
             Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
             if (r.getStatus() != 201) {
-                System.out.println("Någor sket sig... " + r.getStatus());
-                //         JOptionPane.showMessageDialog(this, "ERROR: " + r.getStatus() + " Someting went wrong!");
+//                System.out.println("Någor sket sig... " + r.getStatus());
+                         JOptionPane.showMessageDialog(this.clientGui, "Someting went wrong: " + r.getStatus(), "Unable to post calendar event", JOptionPane.ERROR_MESSAGE);
             } else {
                 System.out.println("Det funkade! ");
                 //         //Visa sökvägen till den nyligt skpade posten
