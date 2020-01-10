@@ -150,26 +150,35 @@ public class ClientControler {
     }
 
     private void setContextCode(String contextCode) {
-       
-         for (int i = 0; i < this.canvasEvent.length; i++) {
+
+        for (int i = 0; i < this.canvasEvent.length; i++) {
             //I skarp version ska det vara setContextCode("course_" + contextCode);
             //+ fixa kontroll på vad användaren matar in
             this.canvasEvent[i].setContextCode("user_" + contextCode);
         }
 
     }
-    
-    private void fixTimeOneHour(Sring startTime, String endTime) {
-       
-         for (int i = 0; i < this.canvasEvent.length; i++) {
-         
+
+    private void fixTimeOneHour() {
+
+        for (int i = 0; i < this.canvasEvent.length; i++) {
+
             String startTime = this.canvasEvent[i].getStartAt();
             //Få ut timmarna
             //Konverera till int
             //ta minus 1h (if klockslaget är 00, sätt till 23)
             //Konvertera tillbaka till Sring
             //Kopiera in den nya timmen på rätt plats
-         }
+        }
+    }
+
+    private void formatCanvasTime() {
+        //Hårdkodad variant, kan lätt ändras till en mer dynamisk som söker efter mellanrum, men bör ha tillräckligt
+        //stor kontroll på tiden för att det inte ska behövas
+        for (int i = 0; i < this.canvasEvent.length; i++) {
+            canvasEvent[i].setStartAt(canvasEvent[i].getStartAt().substring(0, 10) + "T" + canvasEvent[i].getStartAt().substring(11) + "Z");
+            canvasEvent[i].setEndAt(canvasEvent[i].getEndAt().substring(0, 10) + "T" + canvasEvent[i].getEndAt().substring(11) + "Z");
+        }
     }
 
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
@@ -189,9 +198,8 @@ public class ClientControler {
 //            .request()
 //            .get();
 //      }
-
         this.setContextCode(contextCode);
-        
+
         Feature feature = OAuth2ClientSupport.feature(TOKEN);
 
         Client client = ClientBuilder.newBuilder().register(feature).build();
@@ -214,10 +222,9 @@ public class ClientControler {
 //           form.param("calendar_event[end_at]", canvasEventsArray[i].getEndAt());
 //           form.param("calendar_event[location_name]", canvasEventsArray[i].getLocationName());
 //           form.param("calendar_event[location_address]", canvasEventsArray[i].getLocationAddress());
-
         //Räknare för hur många kalenderevent som inte gick att posta
         int numberOfErrors = 0;
-        
+
         for (int i = 0; i < this.canvasEvent.length; i++) {
 
             //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
@@ -234,7 +241,7 @@ public class ClientControler {
             //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
             //Kan även vara .put(), .get() eller .delete()
             Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
-            
+
             if (r.getStatus() != 201) {
 //                System.out.println("Någor sket sig... " + r.getStatus());
                 numberOfErrors++;
@@ -242,12 +249,12 @@ public class ClientControler {
                         + r.getStatus(), "Unable to post calendar event", JOptionPane.ERROR_MESSAGE);
             }
         }
-        
+
         if (numberOfErrors == 0) {
-           JOptionPane.showMessageDialog(this.clientGui, "All events were "
-                   + "successfully added to the canvas calendar with ID " 
-                   + this.canvasEvent[0].getContextCode(), "Status",
-                   JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this.clientGui, "All events were "
+                    + "successfully added to the canvas calendar with ID "
+                    + this.canvasEvent[0].getContextCode(), "Status",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
