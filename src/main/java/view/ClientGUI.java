@@ -25,7 +25,6 @@ public class ClientGUI extends javax.swing.JFrame {
     private ClientControler clientControler = new ClientControler(this);
     private int selectedRow;
 
-    private ClientControler clientControler = new ClientControler();
 
     /**
      * Creates new form ClientGUI
