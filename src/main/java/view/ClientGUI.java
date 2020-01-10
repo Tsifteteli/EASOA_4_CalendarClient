@@ -259,13 +259,17 @@ public class ClientGUI extends javax.swing.JFrame {
    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
        // TODO add your handling code here:
        //Visa JPanel där man kan redigera "Details" för ett event
-       pnlEditEvent.setVisible(true);
-       btnEditEvent.setVisible(false);
-       btnLoadToCanvas.setVisible(false);
-       btnGetSchedule.setVisible(false);
-       //Hårdkodat med vilken kolumn, men det ska vara detljer som ska redigeras
-       this.selectedRow = tblCalendarEvents.getSelectedRow();
-       txtEventDetails.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3).toString());
+       if (tblCalendarEvents.getSelectedRow() >= 0) {
+           pnlEditEvent.setVisible(true);
+           btnEditEvent.setVisible(false);
+           btnLoadToCanvas.setVisible(false);
+           btnGetSchedule.setVisible(false);
+           //Hårdkodat med vilken kolumn, men det ska vara detljer som ska redigeras
+           this.selectedRow = tblCalendarEvents.getSelectedRow();
+           txtEventDetails.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 3).toString());
+       } else {
+           System.out.printf("Fel, måste välja en rad\n");
+       }
    }//GEN-LAST:event_btnEditEventActionPerformed
 
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
