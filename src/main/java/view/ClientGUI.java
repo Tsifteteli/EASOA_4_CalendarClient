@@ -263,6 +263,10 @@ public class ClientGUI extends javax.swing.JFrame {
 
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
        // TODO add your handling code here:
+       String contextCode = JOptionPane.showInputDialog( this, 
+        "Enter the canvas ID number of the course to continue", 
+        "Canvas ID number", 
+        JOptionPane.QUESTION_MESSAGE);
        //Kör metod som POSTar canvasEvent-objekten till Canvas
        //Visa pop-up som bekräftelse på om det funkat eller ej... (lista vilka som postats och vilka som misslyckats?)
    }//GEN-LAST:event_btnLoadToCanvasActionPerformed
