@@ -1,8 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+2020-01-13
+D0031N Enterprise Architecture och SOA
+Examinationsuppgift 4, Schemahantering LTU - EA-modellering och Systemintegration
+Caroline Blomgren, carbol-8@student.ltu.se
+Robin Hellström, robhel-4@student.ltu.se
+*/
 package controler;
 
 import com.google.gson.Gson;
@@ -45,7 +47,10 @@ public class ClientControler {
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
     private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
     private CanvasEvent[] canvasEvent;
+    
+    private static final String TEST_TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20191202.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
 
+    
     public ClientControler(ClientGUI clientGui) {
         this.clientGui = clientGui;
     }
@@ -75,7 +80,11 @@ public class ClientControler {
         try {
             //Använd klassen URL för att peka ut en resurs på WWW
             //https://docs.oracle.com/javase/8/docs/api/java/net/URL.html
-            URL url = new URL(ClientControler.TIME_EDIT_URI);
+//            URL url = new URL(ClientControler.TIME_EDIT_URI);
+            
+            //Test
+            URL url = new URL(ClientControler.TEST_TIME_EDIT_URI);
+            
             //Öppnar connectionen mot REST servicen
             HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
             httpCon.setRequestMethod("GET");
