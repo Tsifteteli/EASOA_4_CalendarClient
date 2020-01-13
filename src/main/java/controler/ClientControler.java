@@ -162,37 +162,6 @@ public class ClientControler {
             this.canvasEvent[i].setContextCode("user_" + contextCode);
         }
     }
-    
-    
-    private void fixTimeOneHour() { //Onödig om det funkar med att skippa Z
-       
-      for (int i = 0; i < this.canvasEvent.length; i++) {
-         //2020-01-10T17:00:00Z
-         //Få ut timmarna
-         String startTime = this.canvasEvent[i].getStartAt();
-         String startHour = startTime.substring(12,14);
-
-         //Konverera till int
-         int intStartHour = Integer.parseInt(startHour);
-
-         //ta minus 1h (if klockslaget är 00, sätt till 23)
-         if (intStartHour == 0) {
-            intStartHour = 23;
-         } else {
-            intStartHour--;
-         }
-         //Konvertera tillbaka till Sring
-         startHour = Integer.toString(intStartHour);
-
-         //Kopiera in den nya timmen på rätt plats
-         //Om Stringen bara är 1 car lång - lägg en nolla på index 12
-         //Om Stringen är 2 car lång - lägg in som nedan
-         char[] startTimeCharArray = startTime.toCharArray();
-         startTimeCharArray[12] = 'x'; //Byt ut x mot get car från startHour
-         startTimeCharArray[13] = 'x';
-         startTime = String.valueOf(startTimeCharArray);
-      }
-    }
 
     
     private void formatCanvasTime() {
@@ -205,54 +174,29 @@ public class ClientControler {
     }
 
     
-    //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
-    public void setCanvasCalendar(String contextCode) { //Lägg in CanvasEvent[] canvasEventsArray vid test
+    //Lägger till kallenderevent till Canvaskalendern mha JAX-RS Jersey Client och data i webformulär format
+    public void setCanvasCalendar(String contextCode) { 
 
-        //JAX-RS Client - Ett rekomenderat sätt att koppla upp sig (framför URL)
-        //https://howtodoinjava.com/jersey/jersey-restful-client-examples/
-        //jersey-client dependencyn behöver även jersey-hk2 dependencyn av samma version för att funka.
-        //Går att göra om Client och WebTarget så de går at återanvända
-        //istället för att skapa dem i varje metod - Görs så nu för exemplets skull.
-//      //Hur man gör en GET-request med OAuth2-autentisering
-//      public Response bearerAuthenticationWithOAuth2AtClientLevel(String token) {
-//          Feature feature = OAuth2ClientSupport.feature(token);
-//          Client client = ClientBuilder.newBuilder().register(feature).build();
-//
-//          return client.target("https://sse.examples.org/")
-//            .request()
-//            .get();
-//      }
         this.setContextCode(contextCode);
         this.formatCanvasTime();
 
+        //OAuth2-autentisering med token
         Feature feature = OAuth2ClientSupport.feature(TOKEN);
 
         Client client = ClientBuilder.newBuilder().register(feature).build();
 
         WebTarget target = client.target(ClientControler.CANVAS_URI);
 
-        //Skapa en anropsbyggare genom att använda target som håller URI...
-        //... börja bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
+        //Skapar en anropsbyggare genom att använda target som håller URI,
+        //börjar bygga en request och ange samtidigt vilken mediatyp som accepteras som respons.
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
 
-//        //Testsnurra med testArray
-//        for (int i = 0; i < canvasEventsArray.length; i++) {
-//            
-//           //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
-//           Form form = new Form();
-//           form.param("calendar_event[context_code]", canvasEventsArray[i].getContextCode());
-//           form.param("calendar_event[title]", canvasEventsArray[i].getTitle());
-//           form.param("calendar_event[description]", canvasEventsArray[i].getDescription());
-//           form.param("calendar_event[start_at]", canvasEventsArray[i].getStartAt());
-//           form.param("calendar_event[end_at]", canvasEventsArray[i].getEndAt());
-//           form.param("calendar_event[location_name]", canvasEventsArray[i].getLocationName());
-//           form.param("calendar_event[location_address]", canvasEventsArray[i].getLocationAddress());
         //Räknare för hur många kalenderevent som inte gick att posta
         int numberOfErrors = 0;
 
         for (int i = 0; i < this.canvasEvent.length; i++) {
 
-            //Skapa ett Form-objekt som kan hålla formparametrarna från  ett application/x-www-form-urlencoded formulär
+            //Skapar ett Form-objekt som kan hålla formparametrarna från ett application/x-www-form-urlencoded formulär
             Form form = new Form();
             form.param("calendar_event[context_code]", this.canvasEvent[i].getContextCode());
             form.param("calendar_event[title]", this.canvasEvent[i].getTitle());
@@ -262,13 +206,11 @@ public class ClientControler {
             form.param("calendar_event[location_name]", this.canvasEvent[i].getLocationName());
             form.param("calendar_event[location_address]", this.canvasEvent[i].getLocationAddress());
 
-            //Kör anropet med angivn metod, i detta fallet POST, 
-            //och skickar med objektet i bodyn i form av en entitet av den angivna Mediatypen. 
-            //Kan även vara .put(), .get() eller .delete()
+            //Kör anropet med angivn metod, i detta fallet POST och skickar med 
+            //objektet i bodyn i form av en entitet av den angivna Mediatypen. 
             Response r = invocationBuilder.post(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
             if (r.getStatus() != 201) {
-//                System.out.println("Någor sket sig... " + r.getStatus());
                 numberOfErrors++;
                 JOptionPane.showMessageDialog(this.clientGui, "Someting went wrong: "
                         + r.getStatus(), "Unable to post calendar event", JOptionPane.ERROR_MESSAGE);
@@ -282,33 +224,4 @@ public class ClientControler {
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
-    public void editCanvasEvent() {
-
-    }
-
-    private static CanvasEvent[] testArray() {
-        CanvasEvent[] testArray = new CanvasEvent[3];
-        for (int i = 0; i < testArray.length; i++) {
-            testArray[i] = new CanvasEvent();
-            testArray[i].setContextCode("user_65238");
-            testArray[i].setLocationName("Biblioteket");
-            testArray[i].setTitle("Test från NB 4");
-            testArray[i].setLocationAddress("Storgatan 5");
-            testArray[i].setStartAt("2020-01-10T16:00:00Z");
-            testArray[i].setEndAt("2020-01-10T19:00:00Z");
-            testArray[i].setDescription("Detta är et test!");
-        }
-        return testArray;
-    }
-
-//    //Testobjekt
-//        CanvasEvent canvasEvent = new CanvasEvent();
-//        canvasEvent.setContextCode("user_65238");
-//        canvasEvent.setTitle("Test från NB 3");
-//        canvasEvent.setDescription("Detta är et test!");
-//        canvasEvent.setStartAt("2020-01-10T17:00:00Z");
-//        canvasEvent.setEndAt("2020-01-10T19:00:00Z");
-//        canvasEvent.setLocationName("Biblioteket");
-//        canvasEvent.setLocationAddress("Storgatan 5");
 }
