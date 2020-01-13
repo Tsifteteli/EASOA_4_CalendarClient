@@ -159,7 +159,7 @@ public class ClientControler {
 
     }
     
-    private void fixTimeOneHour() {
+    private void fixTimeOneHour() { //Onödig om det funkar med att skippa Z
        
       for (int i = 0; i < this.canvasEvent.length; i++) {
          //2020-01-10T17:00:00Z
@@ -193,8 +193,8 @@ public class ClientControler {
         //Hårdkodad variant, kan lätt ändras till en mer dynamisk som söker efter mellanrum, men bör ha tillräckligt
         //stor kontroll på tiden för att det inte ska behövas
         for (int i = 0; i < this.canvasEvent.length; i++) {
-            canvasEvent[i].setStartAt(canvasEvent[i].getStartAt().substring(0, 10) + "T" + canvasEvent[i].getStartAt().substring(11) + "Z");
-            canvasEvent[i].setEndAt(canvasEvent[i].getEndAt().substring(0, 10) + "T" + canvasEvent[i].getEndAt().substring(11) + "Z");
+            canvasEvent[i].setStartAt(canvasEvent[i].getStartAt().substring(0, 10) + "T" + canvasEvent[i].getStartAt().substring(11));
+            canvasEvent[i].setEndAt(canvasEvent[i].getEndAt().substring(0, 10) + "T" + canvasEvent[i].getEndAt().substring(11));
         }
     }
 
@@ -216,6 +216,7 @@ public class ClientControler {
 //            .get();
 //      }
         this.setContextCode(contextCode);
+        this.formatCanvasTime();
 
         Feature feature = OAuth2ClientSupport.feature(TOKEN);
 
