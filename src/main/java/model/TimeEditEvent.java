@@ -1,8 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+2020-01-13
+D0031N Enterprise Architecture och SOA
+Examinationsuppgift 4, Schemahantering LTU - EA-modellering och Systemintegration
+Caroline Blomgren, carbol-8@student.ltu.se
+Robin Hellström, robhel-4@student.ltu.se
+*/
 package model;
 
 /**
@@ -18,6 +20,7 @@ public class TimeEditEvent {
     private String endtime;
     private String[] columns;
 
+    
     public void setId(String id) {
         this.id = id;
     }
