@@ -40,13 +40,15 @@ import view.ClientGUI;
  */
 public class ClientControler {
 
-    private ClientGUI clientGui;
+    private final ClientGUI clientGui;
+    private CanvasEvent[] canvasEvent;
 
     //Grundsökvägen till webservicarna vi vill anropa
     private static final String TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20190902.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
     private static final String CANVAS_URI = "https://ltu.instructure.com/api/v1/calendar_events.json";
+    
+    //Token för OAuth2 autentisering vid Canvas API-anrop
     private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
-    private CanvasEvent[] canvasEvent;
     
     private static final String TEST_TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20191202.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
 
@@ -55,32 +57,35 @@ public class ClientControler {
         this.clientGui = clientGui;
     }
 
-    //P.g.a. hårdkodning av sökning på kurskod kan egentligen en modifikation till getCanvasCalendar
-    //input värde ge ne sträng som designerar vilken kurs som ska hämtas
-    //Där finns också ett timeEditEvent objekt som innehåller alla headers också
-    //som man kan återanvända till GUI:n för att visa headers där.
+    
+    //Kör metod som ser till att canvasEvent blir tilldelad 
     public CanvasEvent[] getTimeEditEvent() {
-        getTimeEditCalendar();
+        this.getTimeEditCalendar();
         return this.canvasEvent;
     }
 
+    
     public void setCanvasEvent(CanvasEvent[] canvasEvent) {
         this.canvasEvent = canvasEvent;
     }
 
+    
     public CanvasEvent[] getCanvasEvent() {
         return this.canvasEvent;
     }
 
+    
+    //Sätter en ny description till ett objekt i arrayen-canvasEvent
     public void setCanvasEventDescription(String description, int i) {
         this.canvasEvent[i].setDescription(description);
     }
 
+    
+    //Använder klassen URL för att peka ut den TimeEdit-resurs vi vill få data från
+    //Anropar loadJTableFromTimeEdit()
     private void getTimeEditCalendar() {
         try {
-            //Använd klassen URL för att peka ut en resurs på WWW
 //            URL url = new URL(ClientControler.TIME_EDIT_URI);
-            
             //Test
             URL url = new URL(ClientControler.TEST_TIME_EDIT_URI);
             
@@ -117,7 +122,8 @@ public class ClientControler {
     }
 
     
-    //Konverterar JSON-objektet till ett Java-objekt mha google-gson
+    //Konverterar ett JSON-objekt till ett Java-objekt mha google-gson
+    //Kallar sen på ConvertTimeEditEventToCanvasEvent()
     private void loadJTableFromTimeEdit(String jsonInput) {
         
         TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
@@ -135,7 +141,8 @@ public class ClientControler {
     }
 
     
-    //Plockar ut de individuella reservationerna från ett TimeEditCalendar-objekt och lägger i en CanvasEvent-array
+    //Plockar ut de individuella TimeEdit-reservationerna från ett TimeEditCalendar-objekt 
+    //och lägger i instansvariabeln canvasEvent som är en CanvasEvent-array
     private void ConvertTimeEditEventToCanvasEvent(TimeEditCalendar timeEditCalendar) {
 
         this.canvasEvent = new CanvasEvent[timeEditCalendar.getInfo().getReservationcount()];
@@ -154,16 +161,19 @@ public class ClientControler {
     }
 
     
+    //Sätter contextCode hos objekten i canvasEvent-arrayen till det kalender-ID som fås som inparameter
     private void setContextCode(String contextCode) {
 
         for (int i = 0; i < this.canvasEvent.length; i++) {
-            //I skarp version ska det vara setContextCode("course_" + contextCode);
-            //+ fixa kontroll på vad användaren matar in
+            //I skarp version ska det vara "setContextCode("course_" + contextCode);"
+            //då det är kursscheman som ska sättas
+            //+ behöver fixas kontroll på vad användaren matar in
             this.canvasEvent[i].setContextCode("user_" + contextCode);
         }
     }
 
     
+    //Formaterar om start- och sluttid så som Canvas API vill få dem
     private void formatCanvasTime() {
         //Hårdkodad variant, kan lätt ändras till en mer dynamisk som söker efter mellanrum, men bör ha tillräckligt
         //stor kontroll på tiden för att det inte ska behövas
@@ -184,7 +194,6 @@ public class ClientControler {
         Feature feature = OAuth2ClientSupport.feature(TOKEN);
 
         Client client = ClientBuilder.newBuilder().register(feature).build();
-
         WebTarget target = client.target(ClientControler.CANVAS_URI);
 
         //Skapar en anropsbyggare genom att använda target som håller URI,
