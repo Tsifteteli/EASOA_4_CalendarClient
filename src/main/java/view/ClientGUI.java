@@ -17,14 +17,18 @@ import model.CanvasEvent;
  */
 public class ClientGUI extends javax.swing.JFrame {
 
-    //2D array för data til JTable (Tablemodel)
+    //2D array för data til JTable
     private Object[][] data;
+    //TableMobel till JTable
     private DefaultTableModel tblModel;
+    //Vald rad i JTable
+    private int selectedRow;
+    //Details för ett kalenderevent
     private String details;
 
     private ClientControler clientControler = new ClientControler(this);
-    private int selectedRow;
-
+    
+    
     /**
      * Creates new form ClientGUI
      */
@@ -33,15 +37,15 @@ public class ClientGUI extends javax.swing.JFrame {
         pnlEditEvent.setVisible(false);
     }
 
+    
+    //Skapa arrayen "data" som används för att föra över datat till min JTable
     private void loadEventsToJTable(CanvasEvent[] canvasEventsArray) {
 
-        //Specifiera storlek på en annan array (kallad data) som används för att föra över datat till min JTable sen.
         int rows = canvasEventsArray.length;
         data = new Object[rows][6];
         int row = 0;
         for (CanvasEvent canvasEvent : canvasEventsArray) {
-            //test
-//         System.out.println(canvasEvent.getTitle() + canvasEvent.getLocationName() + canvasEvent.getLocationAddress() + canvasEvent.getDescription());
+            
             //Ladda JTable
             data[row][0] = canvasEvent.getTitle();
             data[row][1] = canvasEvent.getLocationName();
@@ -54,6 +58,7 @@ public class ClientGUI extends javax.swing.JFrame {
         initTable();
     }
 
+    
     //Relaterar arrayen data till JTable(tblCalendarEvents) som visar upp innehållet   
     private void initTable() {
 
@@ -255,18 +260,20 @@ public class ClientGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
    private void btnGetScheduleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetScheduleActionPerformed
-       //Kör metoden som hämtar JSON-data från TimeEdit
-       //Just nu är det hårdkodat på vår kurs, men när man har mer access till TimeEdit API kan man göra en sökning på evens som machar kursen och datum.
-       //Den kör i sin tur loadEventsToJTable(CanvasEvent[] canvasEventsArray)
-       //och skriver ut namne på kursen från datan i TimeEditEvents column-array.
+       //Kör metoden som hämtar JSON-data från TimeEdit och visar data i tabellen
+       //Just nu hårdkodat på D0031N ht19, men med access till TimeEdit API kan 
+       //sökning göras efter reservationer på andra kurser som machar angivna sökparametrar.
+
        this.clientControler.getTimeEditEvent();
        loadEventsToJTable(this.clientControler.getCanvasEvent());
    }//GEN-LAST:event_btnGetScheduleActionPerformed
 
+   
    private void btnEditEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditEventActionPerformed
-       // TODO add your handling code here:
-       //Visa JPanel där man kan redigera "Details" för ett event
+       //Visar JPanel där "Details" för ett event kan redigeras
+       
        if (tblCalendarEvents.getSelectedRow() >= 0) {
            pnlEditEvent.setVisible(true);
            lblEditTitle.setText(tblCalendarEvents.getValueAt(tblCalendarEvents.getSelectedRow(), 0).toString()
@@ -285,9 +292,10 @@ public class ClientGUI extends javax.swing.JFrame {
        }
    }//GEN-LAST:event_btnEditEventActionPerformed
 
+   
    private void btnLoadToCanvasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadToCanvasActionPerformed
-       // TODO add your handling code here:
-       //POSTa canvasEvent-objekt till Canvas
+       //Ber om kalender ID och kallar på metod som postar alla kalenderevent i tabellen till Canvas
+       
        String contextCode = JOptionPane.showInputDialog(this, 
         "Enter the canvas ID number of the course to continue", 
         "Canvas ID number", 
@@ -295,14 +303,16 @@ public class ClientGUI extends javax.swing.JFrame {
        this.clientControler.setCanvasCalendar(contextCode);
    }//GEN-LAST:event_btnLoadToCanvasActionPerformed
 
+   
    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-       // TODO add your handling code here:
+       //Sparar de nya detailsen till motsvarande objekt i canvasEvent-arrayen
+       //och visar infon i tabellen
+       
        details = txtEventDetails.getText();
-       //Lägg till kod som sparar in de nya detailsen till motsvarande
-       //canvasEvent-objekt i canvasEvent-arrayen och visar infon i tabellen
-
+       
        clientControler.setCanvasEventDescription(txtEventDetails.getText(), this.selectedRow);
        loadEventsToJTable(clientControler.getCanvasEvent());
+       
        txtEventDetails.setText("");
        pnlEditEvent.setVisible(false);
        btnEditEvent.setVisible(true);
@@ -310,8 +320,9 @@ public class ClientGUI extends javax.swing.JFrame {
        btnGetSchedule.setVisible(true);
    }//GEN-LAST:event_btnSaveActionPerformed
 
+   
    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-       // TODO add your handling code here:
+       //Går ur editeringsläget utan att spara några ändringar
        txtEventDetails.setText("");
        pnlEditEvent.setVisible(false);
        btnEditEvent.setVisible(true);
