@@ -79,7 +79,6 @@ public class ClientControler {
     private void getTimeEditCalendar() {
         try {
             //Använd klassen URL för att peka ut en resurs på WWW
-            //https://docs.oracle.com/javase/8/docs/api/java/net/URL.html
 //            URL url = new URL(ClientControler.TIME_EDIT_URI);
             
             //Test
@@ -103,16 +102,11 @@ public class ClientControler {
             //Läs av rad för rad från BufferedReadern till min tabell
             String line = br.readLine();
             while (line != null) {
-                //Testa först med en System.out.println så jag ser att jag får ut data och vilken sorts data det är, 
-                //så jag kan skapa en egen klass som matchar och kan hålla datat.
-                //Ladda in datan i min tabell
                 loadJTableFromTimeEdit(line);
                 line = br.readLine();
             }
 
-            //Ett annat sätt at läsa av alla rader från BufferedReadern till min tabell
-            //loadJTableFromJson(br.lines().collect(Collectors.joining(System.lineSeparator())));
-            //Signalera stängning av http-connection
+            //Stäng http-connection
             httpCon.disconnect();
 
         } catch (MalformedURLException urlEx) {
@@ -122,10 +116,10 @@ public class ClientControler {
         }
     }
 
+    
+    //Konverterar JSON-objektet till ett Java-objekt mha google-gson
     private void loadJTableFromTimeEdit(String jsonInput) {
-        //Konvertera JSON-Array till en Array med Java-objekt (Av en klass som jag skapat som matchar)
-        //Finns flera olika 3e-parts-bibliotek som kan användas för detta på https://www.json.org/json-en.html
-        //I detta fallet används google-gson
+        
         TimeEditCalendar timeEditCalendar = new TimeEditCalendar();
         JsonObject jsonObject = new Gson().fromJson(jsonInput, JsonObject.class);
 
@@ -138,9 +132,10 @@ public class ClientControler {
         timeEditCalendar.setColumnheaders(columnheaders);
 
         ConvertTimeEditEventToCanvasEvent(timeEditCalendar);
-
     }
 
+    
+    //Plockar ut de individuella reservationerna från ett TimeEditCalendar-objekt och lägger i en CanvasEvent-array
     private void ConvertTimeEditEventToCanvasEvent(TimeEditCalendar timeEditCalendar) {
 
         this.canvasEvent = new CanvasEvent[timeEditCalendar.getInfo().getReservationcount()];
@@ -158,6 +153,7 @@ public class ClientControler {
         }
     }
 
+    
     private void setContextCode(String contextCode) {
 
         for (int i = 0; i < this.canvasEvent.length; i++) {
@@ -165,8 +161,8 @@ public class ClientControler {
             //+ fixa kontroll på vad användaren matar in
             this.canvasEvent[i].setContextCode("user_" + contextCode);
         }
-
     }
+    
     
     private void fixTimeOneHour() { //Onödig om det funkar med att skippa Z
        
@@ -198,6 +194,7 @@ public class ClientControler {
       }
     }
 
+    
     private void formatCanvasTime() {
         //Hårdkodad variant, kan lätt ändras till en mer dynamisk som söker efter mellanrum, men bör ha tillräckligt
         //stor kontroll på tiden för att det inte ska behövas
@@ -207,6 +204,7 @@ public class ClientControler {
         }
     }
 
+    
     //Lägger till kallenderevent till Canvaskalendern mha data i webformulär format
     public void setCanvasCalendar(String contextCode) { //Lägg in CanvasEvent[] canvasEventsArray vid test
 
