@@ -49,8 +49,6 @@ public class ClientControler {
     
     //Token för OAuth2 autentisering vid Canvas API-anrop
     private static final String TOKEN = "3755~TwMIw2unF5GG6JJ3Sxlxf59jb5QZAoCxLAyvyA8SPOrIkHsUv8Ab1vF2a1efxiVt";
-    
-    private static final String TEST_TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20191202.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
 
     
     public ClientControler(ClientGUI clientGui) {
@@ -87,7 +85,7 @@ public class ClientControler {
         try {
 //            URL url = new URL(ClientControler.TIME_EDIT_URI);
             //Test
-            URL url = new URL(ClientControler.TEST_TIME_EDIT_URI);
+            URL url = new URL(ClientControler.TIME_EDIT_URI);
             
             //Öppnar connectionen mot REST servicen
             HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();

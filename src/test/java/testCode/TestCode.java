@@ -13,6 +13,9 @@ import model.CanvasEvent;
  */
 public class TestCode {
    
+   //Test-URI för eventen i december
+    private static final String TEST_TIME_EDIT_URI = "https://cloud.timeedit.net/ltu/web/schedule1/ri.json?h=t&sid=3&p=20191202.x,20200906.x&objects=119838.28&ox=0&types=0&fe=0";
+   
    //        //Testsnurra med testArray för setCanvasCalendar()
 //   //Lägg in CanvasEvent[] canvasEventsArray som inparameter vid test
 //        for (int i = 0; i < canvasEventsArray.length; i++) {
