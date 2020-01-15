@@ -25,8 +25,6 @@ public class ClientGUI extends javax.swing.JFrame {
     private DefaultTableModel tblModel;
     //Vald rad i JTable
     private int selectedRow;
-    //Details för ett kalenderevent
-    private String details;
 
     private ClientControler clientControler = new ClientControler(this);
     
@@ -309,8 +307,6 @@ public class ClientGUI extends javax.swing.JFrame {
    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
        //Sparar de nya detailsen till motsvarande objekt i canvasEvent-arrayen
        //och visar infon i tabellen
-       
-       details = txtEventDetails.getText();
        
        clientControler.setCanvasEventDescription(txtEventDetails.getText(), this.selectedRow);
        loadEventsToJTable(clientControler.getCanvasEvent());
