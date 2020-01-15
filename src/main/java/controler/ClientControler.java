@@ -56,13 +56,6 @@ public class ClientControler {
     }
 
     
-    //Kör metod som ser till att canvasEvent blir tilldelad 
-    public CanvasEvent[] getTimeEditEvent() {
-        this.getTimeEditCalendar();
-        return this.canvasEvent;
-    }
-
-    
     public void setCanvasEvent(CanvasEvent[] canvasEvent) {
         this.canvasEvent = canvasEvent;
     }
@@ -81,7 +74,7 @@ public class ClientControler {
     
     //Använder klassen URL för att peka ut den TimeEdit-resurs vi vill få data från
     //Anropar loadJTableFromTimeEdit()
-    private void getTimeEditCalendar() {
+    public void getTimeEditCalendar() {
         try {
 //            URL url = new URL(ClientControler.TIME_EDIT_URI);
             //Test

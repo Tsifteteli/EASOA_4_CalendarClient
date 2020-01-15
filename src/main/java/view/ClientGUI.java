@@ -266,7 +266,7 @@ public class ClientGUI extends javax.swing.JFrame {
        //Just nu hårdkodat på D0031N ht19, men med access till TimeEdit API kan 
        //sökning göras efter reservationer på andra kurser som machar angivna sökparametrar.
 
-       this.clientControler.getTimeEditEvent();
+       this.clientControler.getTimeEditCalendar();
        loadEventsToJTable(this.clientControler.getCanvasEvent());
    }//GEN-LAST:event_btnGetScheduleActionPerformed
 
