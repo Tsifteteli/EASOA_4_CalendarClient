@@ -13,6 +13,7 @@ package model;
  */
 public class TimeEditCalendar {
 
+    //"","Lokal/plats, Lokal","Lärare, Student","Aktivitet","","Kurs/Program,Kurs","Campus","Text","Text","Syfte","Kurs/Program","Kund","Utrustning" 
     private String[] columnheaders;
     private ReservationInfo info;
     private TimeEditEvent[] reservations;

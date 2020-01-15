@@ -18,6 +18,7 @@ public class TimeEditEvent {
     private String starttime;
     private String enddate;
     private String endtime;
+    //Plats & Lokal ; Lärare ; Aktivitet ; Kurs/Program ; Campus ; Text ; Text ; Syfte ; Kurs/Program ; Kund ; Utrustning
     private String[] columns;
 
     
